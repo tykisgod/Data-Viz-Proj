@@ -42,11 +42,20 @@ Data and obtain
 - Detailed, massive information on every satellite
 - Free, online
 
-### Slide 6-8
-- Tells a story
-What makes our visualization cool
-- Figurative expression
-- Tells a story on satellites launched
+### Slide 6
+- The first chart is a Proportional Symbol Map
+- How to interact with map: zoom in/out, click on country/dot.
+- The map shows the satellites situation of each country and many detailed information.
+
+### Slide 7
+- The second chart is a top-down satellites orbit graph.
+- How to interact with map: you can click on satellites, orbit.
+- The map shows the purpose, ownership, perigee and apogee of satellites.
+
+### Slide 8
+- The third chart is a combination of several basic charts.
+- How to interact with map: adjust the time bar or input specific word.
+- These charts show the number of satellites of each country, purpose of satellites, type of orbit and other potential information by year or country.
 
 ### Slide 9
 Design considerations
