@@ -61,11 +61,13 @@ Data and obtain
 Design considerations
 - Turn massive, unreadable data into expressive, clear visualizations
 - Multi layers, those who want to know more can get more information through interaction
+- Some problems we may meet.
 
 ### Slide 10
-How it compares with what others have done
-- More interactive
-- More layers of information
+An example of comparation. Our design is:
+- More dynamic
+- Clearer
+- More figurative
 
 ### Slide 11
 Technologies we plan to use
