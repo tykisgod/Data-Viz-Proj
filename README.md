@@ -42,17 +42,6 @@ Data and obtain
 - Detailed, massive information on every satellite
 - Free, online
 
-### Slide 6-8
-- Tells a story
-What makes our visualization cool
-- Figurative expression
-- Tells a story on satellites launched
-
-### Slide 9
-Design considerations
-- Turn massive, unreadable data into expressive, clear visualizations
-- Multi layers, those who want to know more can get more information through interaction
-
 ### Slide 10
 How it compares with what others have done
 - More interactive
