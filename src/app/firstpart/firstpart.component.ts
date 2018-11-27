@@ -25,6 +25,7 @@ export class FirstpartComponent implements OnInit {
   }
 
   private createChart(): void {
+    var tooltip_first = d3.select(".tooltip_first");
     var show_launch_site = true;
     var show_country_lauch = true;
     var temp_country_jsonfeatures
@@ -62,8 +63,8 @@ export class FirstpartComponent implements OnInit {
         var countryArray = new Array();
         countryArray = country.map(d => d.country);
         var valueArray = country.map(d => d.num);
-        temp_country_valuearray=valueArray
-        temp_country_countryArray=countryArray
+        temp_country_valuearray = valueArray
+        temp_country_countryArray = countryArray
         // var jsonValueArray = new Array();
 
         // var jsonCountryArray = new Array();
@@ -75,7 +76,7 @@ export class FirstpartComponent implements OnInit {
         //     }
         //   }
         // }
-        temp_country_jsonfeatures=json.features
+        temp_country_jsonfeatures = json.features
         gg.selectAll(".states")
           .data(json.features)
           .enter()
@@ -92,19 +93,33 @@ export class FirstpartComponent implements OnInit {
             }
           })
           .attr("stroke", "black")
-          .attr("d", path);
+          .attr("d", path)
+          .on("mouseover", function (d:any, i) {
+            d3.select(this).attr("stroke-width", 2);
+            return tooltip_first.style("hidden", false).html("<p>Country: "+d["properties"]["NAME"]+'</p><p>'+'Num of Launch:'+temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])]+"</p>");
+          })
+          .on("mousemove", function (d:any) {
+            tooltip_first.classed("hidden", false)
+              .style("top", (d3.event.pageY) + "px")
+              .style("left", (d3.event.pageX + 10) + "px")
+              .html("<p>Country: "+d["properties"]["NAME"]+'</p><p>'+'Num of Launch:'+temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])]+"</p>");
+          })
+          .on("mouseout", function (d:any, i) {
+            d3.select(this).attr("stroke-width", 1);
+            tooltip_first.classed("hidden", true);
+          });
       });
     });
 
     slide_for_total_num()
 
-    
+
 
 
 
 
     function slide_for_total_num() {
-      
+
       //这一大段要加到后面的dragmove里面，要用前面的checkbox改变的两个bool参数来判断是否进行这两个映射。这个可以不用函数表示。。就写在外面
       function slide_for_launch_site() {
         d3.json("src/assets/world_geojson.json").then(function (json: any) {
@@ -135,7 +150,6 @@ export class FirstpartComponent implements OnInit {
             .attr("cy", projection(a)[1])
             .attr("r", 5)
             .attr("opacity", "0.7")
-            .style("fill", "red");
         });
       }
 
@@ -248,6 +262,8 @@ export class FirstpartComponent implements OnInit {
 
               gg.selectAll(".states")
                 .data(json.features)
+                .transition()
+                .duration(150)
                 .attr("fill", function (d, i) {
                   var index = countryArray.indexOf(d["properties"]["NAME"]);
                   if (index >= 0) {
@@ -260,63 +276,65 @@ export class FirstpartComponent implements OnInit {
                   } else {
                     return "white";
                   }
-                })
-              // .attr("stroke", "black")
-              // .attr("d", path);
+                });
+                
 
-              // var third_count = date_now.getTime();
-              // console.log("after redraw" + third_count)
-            });
-            last_time = x_value_of_circle
-          }
+            // .attr("stroke", "black")
+            // .attr("d", path);
+
+            // var third_count = date_now.getTime();
+            // console.log("after redraw" + third_count)
+          });
+          last_time = x_value_of_circle
         }
-        // var timecosume = date_now.getTime() - origin_time;
-        // console.log("update use " + timecosume + " ms")
       }
+      // var timecosume = date_now.getTime() - origin_time;
+      // console.log("update use " + timecosume + " ms")
     }
+  }
 
-    //deal with checkbox
-    d3.select("#by_launch_site").on("change", update_by_launch_site);
-    d3.select("#by_country").on("change", update_by_country);
+  //deal with checkbox
+  d3.select("#by_launch_site").on("change", update_by_launch_site);
+  d3.select("#by_country").on("change", update_by_country);
 
     function update_by_launch_site() {
-      if (d3.select("#by_launch_site").property("checked")) {
-        console.log("by_launch_site: true")
-        show_launch_site = true;
-        slide_for_launch_site()
-      } else {
-        console.log("by_launch_site: false")
-        show_launch_site = false;
-        //这个地方应该挪到开关那里
-        svg.selectAll(".site_circle").remove()
-      }
-    }
-    function update_by_country() {
-      if (d3.select("#by_country").property("checked")) {
-        console.log("show_country_lauch: true")
-        show_country_lauch = true;
-        gg.selectAll(".states")
-          .data(temp_country_jsonfeatures)
-          .attr("fill", function (d, i) {
-            var index = temp_country_countryArray.indexOf(d["properties"]["NAME"]);
-            if (index >= 0) {
-              // console.log(d["properties"]["NAME"] + " " + valueArray[index]);
-              if (temp_country_valuearray[index] == 0) {
-                return "white"
-              } else {
-                return (colorScale(temp_country_valuearray[index]));
-              }
-            } else {
-              return "white";
-            }
-          })
-      } else {
-        console.log("show_country_lauch: false")
-        gg.selectAll(".states")
-          .attr("fill", "white")
-        show_country_lauch = false;
-      }
-    }
+  if (d3.select("#by_launch_site").property("checked")) {
+    console.log("by_launch_site: true")
+    show_launch_site = true;
+    // slide_for_launch_site()
+  } else {
+    console.log("by_launch_site: false")
+    show_launch_site = false;
+    //这个地方应该挪到开关那里
+    svg.selectAll(".site_circle").remove()
+  }
+}
+function update_by_country() {
+  if (d3.select("#by_country").property("checked")) {
+    console.log("show_country_lauch: true")
+    show_country_lauch = true;
+    gg.selectAll(".states")
+      .data(temp_country_jsonfeatures)
+      .attr("fill", function (d, i) {
+        var index = temp_country_countryArray.indexOf(d["properties"]["NAME"]);
+        if (index >= 0) {
+          // console.log(d["properties"]["NAME"] + " " + valueArray[index]);
+          if (temp_country_valuearray[index] == 0) {
+            return "white"
+          } else {
+            return (colorScale(temp_country_valuearray[index]));
+          }
+        } else {
+          return "white";
+        }
+      })
+  } else {
+    console.log("show_country_lauch: false")
+    gg.selectAll(".states")
+      .attr("fill", "white")
+    show_country_lauch = false;
+  }
+}
 
   }
 }
