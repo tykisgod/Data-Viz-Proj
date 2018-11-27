@@ -41,15 +41,32 @@ export class SecondComponent implements OnInit {
     var geosynchronous_radius = 40000;
     var country_list = ["United States", "China", "Russia", "Japan", "Others"];
     var purpose_list = ["Communications", "Earth Observation", "Tech Dev", "Navigation", "Space Science", "Others"];
+    var user_list = ["Commercial", "Government", "Military", "Civil", "Multiple"];
+
     var radius_scale_earth = d3.scaleLinear().domain([0,earth_radius]).range([0,height]);
     var radius_reverse_earth = d3.scaleLinear().range([0,earth_radius]).domain([0,height]);
     var radius_scale_leo = d3.scaleLinear().domain([0,low_earth_radius+earth_radius]).range([0,height]);
     var radius_scale_meo = d3.scaleLinear().domain([0,medium_earth_radius+earth_radius]).range([0,height]);
     var radius_scale_geo = d3.scaleLinear().domain([0,geosynchronous_radius+earth_radius]).range([0,height]);
     var radius_reverse_geo = d3.scaleLinear().range([0,geosynchronous_radius+earth_radius]).domain([0,height]);
-
+    svg.append('g')
+    .attr("class", "altitude")
+    .attr("transform", "translate(" + (width/2) + ",0)")
+    .call(d3.axisRight(radius_scale_geo))
+    svg.selectAll(".altitude .tick text")
+    .text(function(d,i){
+        return +d-6400 + "KM";
+    })
+    .attr("font-size", 12)
+    .attr("x", "-1em")
+    .attr("text-anchor", "center")
+    svg.select(".altitude .domain")
+    .attr("stroke", "none")
+    svg.selectAll(".altitude .tick line")
+    .attr("stroke", "none")
     var color_scale_country = d3.scaleOrdinal(d3.schemeCategory10);
     var color_scale_purpose = d3.scaleOrdinal(d3.schemeCategory10);
+    var color_scale_user = d3.scaleOrdinal(d3.schemeCategory10);
     var divNode:any = d3.select("body").node();
     var defs = svg.append("defs");
     var filter = defs.append("filter")
@@ -98,6 +115,18 @@ export class SecondComponent implements OnInit {
         {return 4}
       else
         {return 5}
+    }
+    function user_number(user){
+      if (user == user_list[0]) 
+        {return 0}
+      else if (user == user_list[1])
+        {return 1}
+      else if (user == user_list[2])
+        {return 2}
+      else if (user == user_list[3])
+        {return 3}
+      else
+        {return 4}
     }
 
     svg.append("image")
@@ -237,6 +266,28 @@ export class SecondComponent implements OnInit {
       d3.select("#show_low")
       .on("click", function(){
         orbit_flag = "leo";
+
+        svg.select(".altitude")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .call(<any>d3.axisRight(radius_scale_leo))
+        svg.selectAll(".altitude .tick text")
+        .transition()
+        .delay(501)
+        .duration(2000)
+        .attr("text-anchor", "center")
+        .attr("x", "-1em")
+        .text(function(d,i){
+            console.log("text" + d);
+            return +d-6400 + "KM";
+        })
+        .attr("font-size", 12)
+        svg.select(".altitude .domain")
+        .attr("stroke", "none")
+        svg.selectAll(".altitude .tick line")
+        .attr("stroke", "none")
+
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
@@ -288,6 +339,27 @@ export class SecondComponent implements OnInit {
       d3.select("#show_medium")
       .on("click", function(){
         orbit_flag = "meo";
+
+        svg.select(".altitude")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .call(<any>d3.axisRight(radius_scale_meo))
+        svg.selectAll(".altitude .tick text")
+        .transition()
+        .delay(501)
+        .duration(2000)
+        .attr("x", "-1em")
+        .attr("text-anchor", "center")
+        .text(function(d,i){
+            return +d-6400 + "KM";
+        })
+        .attr("font-size", 12)
+        svg.select(".altitude .domain")
+        .attr("stroke", "none")
+        svg.selectAll(".altitude .tick line")
+        .attr("stroke", "none")
+        
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
@@ -339,6 +411,28 @@ export class SecondComponent implements OnInit {
       d3.select("#show_g")
       .on("click", function(){
         orbit_flag = "geo";
+
+        svg.select(".altitude")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .call(<any>d3.axisRight(radius_scale_geo))
+        svg.selectAll(".altitude .tick text")
+        .transition()
+        .delay(501)
+        .duration(2000)
+        .attr("x", "-1em")
+        .attr("text-anchor", "center")
+        .text(function(d,i){
+            console.log("text" + d);
+            return +d-6400 + "KM";
+        })
+        .attr("font-size", 12)
+        svg.select(".altitude .domain")
+        .attr("stroke", "none")
+        svg.selectAll(".altitude .tick line")
+        .attr("stroke", "none")
+        
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
@@ -387,7 +481,7 @@ export class SecondComponent implements OnInit {
         .attr("r", radius_scale_geo(6400+35200))
       })
 
-      d3.select("#by_country")
+      d3.select("#second_by_country")
       .on("click", function(){
         svg.selectAll(".satellites")
         .transition()
@@ -468,7 +562,7 @@ export class SecondComponent implements OnInit {
 
       })
 
-      d3.select("#by_use")
+      d3.select("#second_by_purpose")
       .on("click", function(){
         svg.selectAll(".satellites")
         .transition()
@@ -535,6 +629,87 @@ export class SecondComponent implements OnInit {
         .attr('alignment-baseline', 'middle')
         .attr("font-size", 10)
         .text(function(d){
+          return d;
+        })
+
+      })
+
+      d3.select("#second_by_user")
+      .on("click", function(){
+        svg.selectAll(".satellites")
+        .transition()
+        .delay(500)
+        .duration(1000)
+        .attr("fill", function(d,i):any{
+          return color_scale_user(""+user_number(d["Users"]))
+        })
+        
+        svg.selectAll(".legend_circles")
+        .data(user_list)
+        .enter()
+        .append("circle")
+        .attr("class", "legend_circles")
+        .attr("cx", width+width)
+        .attr("cy", function(d,i){
+          return i*50+20;
+        })
+        .attr("r", 5)
+        .attr("fill", function(d,i){
+          return color_scale_user(""+i);
+        })
+        svg.selectAll(".legend_labels")
+        .data(user_list)
+        .enter()
+        .append("text")
+        .attr("class", "legend_labels")
+        .attr("x", width+width)
+        .attr("y", function(d,i){
+          return i*50+20;
+        })
+        .attr("fill", function(d,i){
+          return color_scale_user(""+i);
+        })
+        .attr('alignment-baseline', 'middle')
+        .attr("font-size", 10)
+        .text(function(d){
+          return d;
+        })
+        svg.selectAll(".legend_circles")
+        .data(user_list)
+        .exit()
+        .transition()
+        .delay(300)
+        .duration(1300)
+        .attr("cx", width+width)
+        .remove()
+        svg.selectAll(".legend_labels")
+        .data(user_list)
+        .exit()
+        .transition()
+        .delay(300)
+        .duration(1300)
+        .attr("x", width+width)
+        .remove()
+        svg.selectAll(".legend_circles")
+        .data(user_list)
+        .transition()
+        .delay(300)
+        .duration(1500)
+        .attr("cx", width)
+        .attr("fill", function(d,i){
+          return color_scale_user(""+i);
+        })
+        svg.selectAll(".legend_labels")
+        .data(user_list)
+        .transition()
+        .delay(300)
+        .duration(1500)
+        .attr("x", width+5)
+        .attr("fill", function(d,i){
+          return color_scale_user(""+i);
+        })
+        .attr("font-size", 10)
+        .text(function(d, i){
           return d;
         })
 
@@ -635,6 +810,27 @@ export class SecondComponent implements OnInit {
       .on("click", function(){
         flag = 0;
         orbit_flag = "geo";
+        svg.select(".altitude")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .call(<any>d3.axisRight(radius_scale_geo))
+        svg.selectAll(".altitude .tick text")
+        .transition()
+        .delay(501)
+        .duration(2000)
+        .attr("x", "-1em")
+        .attr("text-anchor", "center")
+        .text(function(d,i){
+            console.log("text" + d);
+            return +d-6400 + "KM";
+        })
+        .attr("font-size", 12)
+        svg.select(".altitude .domain")
+        .attr("stroke", "none")
+        svg.selectAll(".altitude .tick line")
+        .attr("stroke", "none")
+
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
