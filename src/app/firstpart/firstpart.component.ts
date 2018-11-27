@@ -96,47 +96,49 @@ export class FirstpartComponent implements OnInit {
       });
     });
 
-    slide_for_launch_site()
     slide_for_total_num()
 
-    // slide_for_total_num()
-    function slide_for_launch_site() {
-      d3.json("src/assets/world_geojson.json").then(function (json: any) {
-        var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
-        // gg.selectAll(".states")
-        //   .data(d3.range(5, 90, 5))
-        //   .enter()
-        //   .append("path")
-        //   .style("fill", "brown")
-        //   .style("fill-opacity", .7)
-        //   .attr("d", function (r) {
-        //     return path(circle.center([13.7258705, 80.2243658]).radius(500));
-        //   })
-        var a: any = [80.2243658, 13.7258705]
-        // var circle:any = d3.geoCircle()
-        // svg.append("g")
-        //   .attr("class", "circle a")
-        //   .selectAll("path")
-        //   .data([10])
-        //   .enter()
-        //   .append("path")
-        //   .attr("d", function (r) { return path(circle.center(a).radius(r)()); })
-        //   .attr('fill','red')
-        //   .attr('opacity','0.7')
-        svg.append("circle")
-          .attr("class", "site_circle")
-          .attr("cx", projection(a)[0])
-          .attr("cy", projection(a)[1])
-          .attr("r", 5)
-          .attr("opacity", "0.7")
-          .style("fill", "red");
-      });
-    }
+    
 
 
 
 
     function slide_for_total_num() {
+      
+      //这一大段要加到后面的dragmove里面，要用前面的checkbox改变的两个bool参数来判断是否进行这两个映射。这个可以不用函数表示。。就写在外面
+      function slide_for_launch_site() {
+        d3.json("src/assets/world_geojson.json").then(function (json: any) {
+          var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
+          // gg.selectAll(".states")
+          //   .data(d3.range(5, 90, 5))
+          //   .enter()
+          //   .append("path")
+          //   .style("fill", "brown")
+          //   .style("fill-opacity", .7)
+          //   .attr("d", function (r) {
+          //     return path(circle.center([13.7258705, 80.2243658]).radius(500));
+          //   })
+          var a: any = [80.2243658, 13.7258705]
+          // var circle:any = d3.geoCircle()
+          // svg.append("g")
+          //   .attr("class", "circle a")
+          //   .selectAll("path")
+          //   .data([10])
+          //   .enter()
+          //   .append("path")
+          //   .attr("d", function (r) { return path(circle.center(a).radius(r)()); })
+          //   .attr('fill','red')
+          //   .attr('opacity','0.7')
+          svg.append("circle")
+            .attr("class", "site_circle")
+            .attr("cx", projection(a)[0])
+            .attr("cy", projection(a)[1])
+            .attr("r", 5)
+            .attr("opacity", "0.7")
+            .style("fill", "red");
+        });
+      }
+
       var radius = 20;
       var margin = 100;
 
