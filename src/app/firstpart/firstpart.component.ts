@@ -25,6 +25,15 @@ export class FirstpartComponent implements OnInit {
   }
 
   private createChart(): void {
+    var show_launch_site = true;
+    var show_country_lauch = true;
+    var temp_country_jsonfeatures
+    var temp_country_valuearray
+    var temp_country_countryArray
+
+    d3.selectAll('input').property('checked', true);
+
+    var status = 0;
     d3.select(".first").remove()
     d3.select(".first").remove()
     var svg = d3.select("#worldmap")
@@ -42,7 +51,6 @@ export class FirstpartComponent implements OnInit {
       var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
       path = d3.geoPath().projection(projection);
 
-
       gg.selectAll("path")
         .data(json.features)  //data join with features
         .enter()
@@ -54,7 +62,8 @@ export class FirstpartComponent implements OnInit {
         var countryArray = new Array();
         countryArray = country.map(d => d.country);
         var valueArray = country.map(d => d.num);
-
+        temp_country_valuearray=valueArray
+        temp_country_countryArray=countryArray
         // var jsonValueArray = new Array();
 
         // var jsonCountryArray = new Array();
@@ -66,7 +75,7 @@ export class FirstpartComponent implements OnInit {
         //     }
         //   }
         // }
-
+        temp_country_jsonfeatures=json.features
         gg.selectAll(".states")
           .data(json.features)
           .enter()
@@ -87,10 +96,11 @@ export class FirstpartComponent implements OnInit {
       });
     });
 
-    test_for_launch_site()
+    slide_for_launch_site()
+    slide_for_total_num()
 
     // slide_for_total_num()
-    function test_for_launch_site() {
+    function slide_for_launch_site() {
       d3.json("src/assets/world_geojson.json").then(function (json: any) {
         var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
         // gg.selectAll(".states")
@@ -114,13 +124,17 @@ export class FirstpartComponent implements OnInit {
         //   .attr('fill','red')
         //   .attr('opacity','0.7')
         svg.append("circle")
-          .attr("class","fuck")
-          .attr("cx",projection(a)[0])
-          .attr("cy",projection(a)[1])
+          .attr("class", "site_circle")
+          .attr("cx", projection(a)[0])
+          .attr("cy", projection(a)[1])
           .attr("r", 5)
+          .attr("opacity", "0.7")
           .style("fill", "red");
       });
-  }
+    }
+
+
+
 
     function slide_for_total_num() {
       var radius = 20;
@@ -177,7 +191,6 @@ export class FirstpartComponent implements OnInit {
         var percent = (d - 100) / (width - 2 * margin)
         return 1974 + Math.floor(44 * percent);
       }
-
       function dragmove(d) {
         // var date_now = new Date();
         // var origin_time = date_now.getTime();
@@ -194,9 +207,11 @@ export class FirstpartComponent implements OnInit {
         x_value_of_circle = get_year(x_value_of_circle)
         // var date_now = new Date();
         // var original_time = date_now.getTime();
-        if (possible_year_list.includes(x_value_of_circle)) {
+        if (possible_year_list.includes(x_value_of_circle) && show_country_lauch) {
           if (last_time != x_value_of_circle) {
+
             d3.json("src/assets/world_geojson.json").then(function (json: any) {
+              temp_country_jsonfeatures = json.features
               // var colorScale = d3.scaleSequential(d3.interpolateOranges).domain([0, 300]);
               // var projection = d3.geoMercator().fitSize([width, height + 100], json);
               // var path = d3.geoPath().projection(projection);
@@ -210,6 +225,8 @@ export class FirstpartComponent implements OnInit {
               var countryArray = new Array();
               countryArray = country.map(d => d.country);
               var valueArray = country.map(d => d.num);
+              temp_country_valuearray = valueArray
+              temp_country_countryArray = countryArray
               // console.log(countryArray)
               // console.log(valueArray)
               // var jsonValueArray = new Array();
@@ -255,5 +272,49 @@ export class FirstpartComponent implements OnInit {
         // console.log("update use " + timecosume + " ms")
       }
     }
+
+    //deal with checkbox
+    d3.select("#by_launch_site").on("change", update_by_launch_site);
+    d3.select("#by_country").on("change", update_by_country);
+
+    function update_by_launch_site() {
+      if (d3.select("#by_launch_site").property("checked")) {
+        console.log("by_launch_site: true")
+        show_launch_site = true;
+        slide_for_launch_site()
+      } else {
+        console.log("by_launch_site: false")
+        show_launch_site = false;
+        //这个地方应该挪到开关那里
+        svg.selectAll(".site_circle").remove()
+      }
+    }
+    function update_by_country() {
+      if (d3.select("#by_country").property("checked")) {
+        console.log("show_country_lauch: true")
+        show_country_lauch = true;
+        gg.selectAll(".states")
+          .data(temp_country_jsonfeatures)
+          .attr("fill", function (d, i) {
+            var index = temp_country_countryArray.indexOf(d["properties"]["NAME"]);
+            if (index >= 0) {
+              // console.log(d["properties"]["NAME"] + " " + valueArray[index]);
+              if (temp_country_valuearray[index] == 0) {
+                return "white"
+              } else {
+                return (colorScale(temp_country_valuearray[index]));
+              }
+            } else {
+              return "white";
+            }
+          })
+      } else {
+        console.log("show_country_lauch: false")
+        gg.selectAll(".states")
+          .attr("fill", "white")
+        show_country_lauch = false;
+      }
+    }
+
   }
 }
