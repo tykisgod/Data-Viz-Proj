@@ -5,6 +5,7 @@
 ## Slide 1
 Introduction
 - 10 words on what our visualization is about ： The Visualization presents information about universal satellites in multi-dimensional aspects.
+- We want attract non-specialists' interest on satellites and space science.
 ## Slide 2
 Topic
 - There are more than 1800 active satellites orbiting earth right now, taking pictures, broadcasting communication and navigation data, spying on every one living on the earth.  
@@ -78,12 +79,30 @@ Responsibility
 - Additional information when mouse over satellites
 
 
-## Slide 16
+## Slide 16 - Pie chart: Satellites of countries
 
-## Slide 17
+- Show ratio of each country's satellites
+- Additional information when mouse over satellites
 
-## Slide 18
+## Slide 17 - Line chart: Trend of Lauching Satellites
 
-## Slide 19
+- Show trend of lauching satellites in years
+- Additional information when mouse over line 
 
-## Slide 20
+## Slide 18 - Line chart: Trend(country part)
+
+- Show trend of lauching satellites in years for each country
+- Additional information when mouse over line 
+
+## Slide 19 - Bar chart: Launch site
+
+- Show number of satellites launched by each launch site
+- Additional information when mouse over line 
+
+## Slide 20 - Bar chart: Top 10 Launch site
+
+- Show number of satellites launched by Top 10  launch site 
+
+- Additional information when mouse over line 
+
+  ​
