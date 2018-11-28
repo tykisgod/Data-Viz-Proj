@@ -7,12 +7,15 @@
     - Yukang Tian, yukangti@usc.edu
     - Yuning Zhu, zhuyunin@usc.edu
     - Chen Lou, chenlou@usc.edu
+    
 ## Slide 1 - Introduction and Audience
 - 10 words on what our visualization is about ： The Visualization presents information about universal satellites in multi-dimensional aspects.
 - We want attract non-specialists' interest on satellites and space science.
+
 ## Slide 2 - Topic and Why Interesting
 - There are more than 1800 active satellites orbiting earth right now, taking pictures, broadcasting communication and navigation data, spying on every one living on the earth.  
 - However, despite the fact that people are being served and observed every day, actually not many are familiar with the topic and have the concept like what most satellites' uses and purposes are, how many satellites a given country have in orbit.
+
 ## Slide 3 - Data
 - The data is from UCS Satellite Database.  It includes in-depth details on the 1,886 satellites currently orbiting Earth. 
 - It's available online and free
@@ -56,7 +59,7 @@
 ## Slide 11 - Second: Overview
 - A simulated orbit projection, from inside to outside: earth, low earth orbit LEO, medium earth orbit MEO and geosynchronous Orbit GEO
 - Orbit altitudes, number of satellites on each orbit are shown to enhance imagnation
-- Each 
+- Each circle represents a satellite
 
 
 ## Slide 12 - Second: Zoom

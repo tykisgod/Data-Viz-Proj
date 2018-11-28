@@ -10,9 +10,9 @@
 
 ### PROJECT ARTIFACTS
 
-- [Demonstration URL](<demo-url>)
-- [Presentation PDF](<presentation-pdf-url>) and [transcript](<presentation-transcript-md-url>)
-- [Article](<article-pdf-url>) and [Overleaf URL](<overleaf-article-url>)
+- [Demonstration URL](http://www-scf.usc.edu/~zhuyunin/draft_demo/)
+- [Presentation PDF](<presentation-pdf-url>) and [transcript](https://github.com/INF554Fall18/project-kepler/blob/master/presentation/PRESENTATION_TRANSCRIPT.md)
+- [Article](<article-pdf-url>) and [Overleaf URL](https://www.overleaf.com/7768316887pcpjwfhdccqr)
 - [YouTube video](<youtube-video-url>)
 
 ## INTRODUCTION
