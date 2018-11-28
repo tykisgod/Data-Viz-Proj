@@ -492,6 +492,7 @@ export class SecondComponent implements OnInit {
         })
         d3.select("#donut")
         .attr("class", "btn btn-info")
+
         svg.selectAll(".legend_circles")
         .data(country_list)
         .enter()
@@ -812,6 +813,10 @@ export class SecondComponent implements OnInit {
       .on("click", function(){
         flag = 0;
         orbit_flag = "geo";
+
+        d3.select("#donut")
+        .attr("class", "btn btn-info disabled")
+
         svg.select(".altitude")
         .transition()
         .delay(500)
