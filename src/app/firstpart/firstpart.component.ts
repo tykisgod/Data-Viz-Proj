@@ -115,38 +115,38 @@ export class FirstpartComponent implements OnInit {
 
     function slide_for_total_num() {
 
-      // //这一大段要加到后面的dragmove里面，要用前面的checkbox改变的两个bool参数来判断是否进行这两个映射。这个可以不用函数表示。。就写在外面
-      // function slide_for_launch_site() {
-      //   d3.json("src/assets/world_geojson.json").then(function (json: any) {
-      //     var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
-      //     // gg.selectAll(".states")
-      //     //   .data(d3.range(5, 90, 5))
-      //     //   .enter()
-      //     //   .append("path")
-      //     //   .style("fill", "brown")
-      //     //   .style("fill-opacity", .7)
-      //     //   .attr("d", function (r) {
-      //     //     return path(circle.center([13.7258705, 80.2243658]).radius(500));
-      //     //   })
-      //     var a: any = [80.2243658, 13.7258705]
-      //     // var circle:any = d3.geoCircle()
-      //     // svg.append("g")
-      //     //   .attr("class", "circle a")
-      //     //   .selectAll("path")
-      //     //   .data([10])
-      //     //   .enter()
-      //     //   .append("path")
-      //     //   .attr("d", function (r) { return path(circle.center(a).radius(r)()); })
-      //     //   .attr('fill','red')
-      //     //   .attr('opacity','0.7')
-      //     svg.append("circle")
-      //       .attr("class", "site_circle")
-      //       .attr("cx", projection(a)[0])
-      //       .attr("cy", projection(a)[1])
-      //       .attr("r", 5)
-      //       .attr("opacity", "0.7")
-      //   });
-      // }
+      //这一大段要加到后面的dragmove里面，要用前面的checkbox改变的两个bool参数来判断是否进行这两个映射。这个可以不用函数表示。。就写在外面
+      function slide_for_launch_site() {
+        d3.json("src/assets/world_geojson.json").then(function (json: any) {
+          var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
+          // gg.selectAll(".states")
+          //   .data(d3.range(5, 90, 5))
+          //   .enter()
+          //   .append("path")
+          //   .style("fill", "brown")
+          //   .style("fill-opacity", .7)
+          //   .attr("d", function (r) {
+          //     return path(circle.center([13.7258705, 80.2243658]).radius(500));
+          //   })
+          var a: any = [80.2243658, 13.7258705]
+          // var circle:any = d3.geoCircle()
+          // svg.append("g")
+          //   .attr("class", "circle a")
+          //   .selectAll("path")
+          //   .data([10])
+          //   .enter()
+          //   .append("path")
+          //   .attr("d", function (r) { return path(circle.center(a).radius(r)()); })
+          //   .attr('fill','red')
+          //   .attr('opacity','0.7')
+          svg.append("circle")
+            .attr("class", "site_circle")
+            .attr("cx", projection(a)[0])
+            .attr("cy", projection(a)[1])
+            .attr("r", 5)
+            .attr("opacity", "0.7")
+        });
+      }
 
       var radius = 20;
       var margin = 100;
@@ -309,8 +309,14 @@ export class FirstpartComponent implements OnInit {
       if (d3.select("#by_country").property("checked")) {
         console.log("show_country_lauch: true")
         show_country_lauch = true;
+
+
+
         gg.selectAll(".states")
           .data(temp_country_jsonfeatures)
+          .enter()
+          .append("path")
+          .attr("class", "states")
           .attr("fill", function (d, i) {
             var index = temp_country_countryArray.indexOf(d["properties"]["NAME"]);
             if (index >= 0) {
@@ -324,10 +330,28 @@ export class FirstpartComponent implements OnInit {
               return "white";
             }
           })
+          .attr("stroke", "black")
+          .attr("d", path)
+          .on("mouseover", function (d: any, i) {
+            d3.select(this).attr("stroke-width", 2);
+            return tooltip_first.style("hidden", false).html("<p>Country: " + d["properties"]["NAME"] + '</p><p>' + 'Num of Launch:' + temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])] + "</p>");
+          })
+          .on("mousemove", function (d: any) {
+            tooltip_first.classed("hidden", false)
+              .style("top", (d3.event.pageY) + "px")
+              .style("left", (d3.event.pageX + 10) + "px")
+              .html("<p>Country: " + d["properties"]["NAME"] + '</p><p>' + 'Num of Launch:' + temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])] + "</p>");
+          })
+          .on("mouseout", function (d: any, i) {
+            d3.select(this).attr("stroke-width", 1);
+            tooltip_first.classed("hidden", true);
+          })
+          
       } else {
         console.log("show_country_lauch: false")
-        gg.selectAll(".states")
-          .attr("fill", "white")
+        gg.selectAll(".states").remove()
+        // gg.selectAll(".states")
+        //   .attr("fill", "white")
         show_country_lauch = false;
       }
     }
