@@ -222,7 +222,7 @@ export class FirstpartComponent implements OnInit {
           .style("stroke-linecap", "round")
           .style("stroke-width", 5);
 
-        var xaxisx = d3.scaleBand().range([x1, x2]).domain(possible_year_list).padding(0);
+        var xaxisx = d3.scaleBand().range([x1, x2]).domain(possible_year_list).paddingInner(0.99);
 
         d3.select("#slider")
           .append("g")
