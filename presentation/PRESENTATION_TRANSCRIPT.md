@@ -38,15 +38,26 @@ Responsibility
 
 ## Slide 6
 
+
 ## Slide 7
+- Overview
+    - Stroy: show num of launch by country/site.
+    - Use d3 map, and it's interactable.
 
 ## Slide 8
+- Introduce Timeline slider:
+    - Includes D3 animated transitions.
+    - Show data changing from 1974 to 2018.
 
 ## Slide 9
+- Check Box: change states between by country and by site.
+- Tool Tips.
 
 ## Slide 10
-
-
+- TODO:
+    - Label
+    - Color choosing
+    - Title
 
 
 ## Slide 11 - Second: Overall
