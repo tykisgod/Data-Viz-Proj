@@ -112,16 +112,16 @@ export class FirstpartComponent implements OnInit {
               return adapt_site_data(d[1])
             }
             )
-            .attr("fill", "red")
+            .attr("fill", "blue")
             .attr("opacity", "0.7")
             .on("mouseover", function (d: any, i) {
-              return tooltip_first.style("hidden", false).html("fuck");
+              return tooltip_first.style("hidden", false).html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
             })
             .on("mousemove", function (d: any) {
               tooltip_first.classed("hidden", false)
                 .style("top", (d3.event.pageY) + "px")
                 .style("left", (d3.event.pageX + 10) + "px")
-                .html("fuck");
+                .html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
             })
             .on("mouseout", function (d: any, i) {
               tooltip_first.classed("hidden", true);
@@ -356,16 +356,16 @@ export class FirstpartComponent implements OnInit {
               return adapt_site_data(d[1])
             }
             )
-            .attr("fill", "red")
+            .attr("fill", "blue")
             .attr("opacity", "0.7")
             .on("mouseover", function (d: any, i) {
-              return tooltip_first.style("hidden", false).html("fuck");
+              return tooltip_first.style("hidden", false).html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
             })
             .on("mousemove", function (d: any) {
               tooltip_first.classed("hidden", false)
                 .style("top", (d3.event.pageY) + "px")
                 .style("left", (d3.event.pageX + 10) + "px")
-                .html("fuck");
+                .html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
             })
             .on("mouseout", function (d: any, i) {
               tooltip_first.classed("hidden", true);
