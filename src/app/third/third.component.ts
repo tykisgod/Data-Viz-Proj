@@ -64,7 +64,7 @@ export class ThirdComponent implements OnInit {
       d.value = +d.value;
       return d;
       }).then(function(data){
-      console.log(data)
+      //console.log(data)
 
 
 
@@ -76,7 +76,8 @@ export class ThirdComponent implements OnInit {
 
       arc.append("path") //for each slide use arc path generator to draw the pie
       .attr("d", <any>path)
-      .attr("fill", function(d:any) {console.log(d.data); return color(d.data.country);}) //get data from node (select and $0.__data__ in console)
+      .attr("fill", function(d:any) {//console.log(d.data); 
+        return color(d.data.country);}) //get data from node (select and $0.__data__ in console)
       .on("mousemove", function(d) {
         d3.select(this)
             .attr("stroke","#fff")
@@ -137,6 +138,8 @@ export class ThirdComponent implements OnInit {
       })
       
     this.draw();
+    this.draw2();
+    this.draw3();
     
 
 
@@ -163,17 +166,17 @@ export class ThirdComponent implements OnInit {
     var width = parseInt(d3.select("#linechart").attr("width")) - margin.left - margin.right;
     var height = parseInt(d3.select("#linechart").attr("height")) - margin.top - margin.bottom;
 
-    console.log(width)
+    //console.log(width)
 
     
 
 
     var line = d3.line()
         .x(function(d:any){
-          console.log(d['YearOfLaunch']);
+          //console.log(d['YearOfLaunch']);
           return xScale(d['YearOfLaunch']);}) 
         .y(function(d:any){
-          console.log(d['Number']);
+          //console.log(d['Number']);
           return yScale(+d['Number']);})
 
     
@@ -197,10 +200,10 @@ export class ThirdComponent implements OnInit {
 
     d3.csv("src/assets/third_data2.csv").then( function(data) {
       
-    console.log(data);
+    //console.log(data);
 
     xScale.domain(data.map(function(d) { 
-      console.log(d['YearOfLaunch'])
+      //console.log(d['YearOfLaunch'])
       return d['YearOfLaunch']; }));
     var y_min = +d3.min(data.map(d=>+d.Number));
     var y_max = +d3.max(data.map(d=>+d.Number));
@@ -246,7 +249,7 @@ export class ThirdComponent implements OnInit {
            .attr("stroke-width","3px")
            .attr("fill", "none") 
            .attr("d", function(d:any) { 
-             console.log("123")
+             //console.log("123")
             //console.log(d);
              return line(d); 
             })
@@ -283,9 +286,9 @@ export class ThirdComponent implements OnInit {
              var ovalue = d['Number'];
              //Get this bar's x/y values, then augment for the tooltip
              var xPosition = parseFloat(d3.select(this).attr("cx")) + 5;
-             console.log(xPosition)
+             //console.log(xPosition)
              var yPosition = parseFloat(d3.select(this).attr("cy")) -10;
-             console.log(yPosition)
+             //console.log(yPosition)
              //Create the tooltip label
              svg//.append("g")
                  .append("text")
@@ -306,12 +309,6 @@ export class ThirdComponent implements OnInit {
                .style("fill-opacity",0)
              })
 
-
-    
-
-  
-  
-  
   
   })
   // d3.csv("src/assets/third_data3.csv").then(function(data) {
@@ -336,9 +333,9 @@ export class ThirdComponent implements OnInit {
       var dataForSortAsc = data.slice(0).sort(compare).reverse();
 
       var compare = function (x, y) {
-        if (x.Value < y.Value) {
+        if (+x.Count < +y.Count) {
             return 1;
-        } else if (x.Value > y.Value) {
+        } else if (+x.Count > +y.Count) {
             return -1;
         } else {
             return 0;
@@ -354,20 +351,13 @@ export class ThirdComponent implements OnInit {
 
     var top5 = false;
 
-    var margin = { top: 60, right: 40, bottom: 60, left: 50 }; //step1: set margin
+    var margin = { top: 60, right: 40, bottom: 100, left: 50 }; //step1: set margin
 
-    var winheight = window.innerHeight;
     var winwidth = window.innerWidth;
+    var winheight = winwidth/2.5;
 
-    var width = 1000 - margin.left - margin.right, //step2: set width and height
-        height = 300 - margin.top - margin.bottom;
-
-
-    var x = d3.scaleBand()
-        //.domain(d3.range(0, 10))
-        .range([0, width])
-        .paddingInner(0.05);
-    var xAxis = d3.axisBottom(x);
+    // var width = 1000 - margin.left - margin.right, //step2: set width and height
+    //     height = 300 - margin.top - margin.bottom;
 
 
 
@@ -383,34 +373,238 @@ export class ThirdComponent implements OnInit {
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-    var width = parseInt(d3.select("#linechart").attr("width")) - margin.left - margin.right;
-    var height = parseInt(d3.select("#linechart").attr("height")) - margin.top - margin.bottom;
-    
+    var width = parseInt(d3.select("#svg0").attr("width")) - margin.left - margin.right;
+    var height = parseInt(d3.select("#svg0").attr("height")) - margin.top - margin.bottom;
 
 
-
-        //.scale(x);
-
-
-    /*
-    var xScale = d3.scalePoint()   ////// 
-            .range([0,width])
-           .padding(0.1)
-
-    var yScale = d3.scaleLinear()
-           //.base(5) 
-           //nice
-           .range([height, 0]);
-
+    var xScale = d3.scaleBand()
+        //.domain(d3.range(0, 10))
+        .range([0, width])
+        .paddingInner(0.05)
+        .paddingOuter(0.1);
     var xAxis = d3.axisBottom(xScale);
-    var yAxis = d3.axisLeft(yScale);
-    xAxis.ticks(5);
-    */
+
+    xScale.domain(data.map(function(d,i) { 
+      //console.log(d['Vehicle'])
+      return d['Vehicle']; }));
+
+
+    svg.append("g")
+      .attr("class", "axis-x")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+    
+    svg.selectAll(".axis-x .tick text")
+      .attr("transform", "rotate(-75)")
+      .attr("dx", "-4.5em")
+      .attr("dy", "-0.9em")
+
+
+    //console.log(data)
+
+    //console.log(d3.max(data, function (d:any) { return +d['Count'] }))
+    var y = d3.scaleLinear()
+      .domain([0, d3.max(data, function (d:any) { return +d['Count'] })])
+      .range([height, 0]);
+
+
+    var y2 = d3.scaleLinear()
+      .domain([0, d3.max(data, function (d:any) { return +d['Count'] })])
+      .range([0, height]);
+    
+    var yAxis = d3.axisLeft(y)
+      //.scale(y);
+
+    svg.append("g")
+      .attr("class", "yAxis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      //.attr("x",2)
+      .attr("y", 4)
+      .attr("dy", "0.7em")
+      .attr("fill", "#000")
+      .style("text-anchor", "end")
+      .attr("font-size", "10.5px")
+      .text("Percent work>40hr(%)");
+
+
+    
+    svg.selectAll('rect')
+      .data(data)
+      .enter()
+      .append('rect')
+      .attr('x', function (d, i) {
+          return xScale(d['Vehicle']);
+      })
+      .attr('y', function (d) { return y(d['Count']); })
+      .attr('width', xScale.bandwidth)
+      .attr('height', function (d) { return y2(d['Count']); })
+      .attr('fill', '#FF4136')
+      .style("fill-opacity",0.8)
+
+    svg.append("text")      // text label for the x axis
+      .attr("id", "title")
+      .attr("x", 450)
+      .attr("y", -30)
+      .style("font-size", "20px")
+      .style("text-anchor", "middle")
+      .text(" All 10 countries of Gender parity index for gross enrolment ratio out of 10 countries in 2014");
+
+      d3.select("#top5").on("click", function(){
+
+        var tmpData = Array.from(Object.create(data))
+        var curTop10 = tmpData.sort(compare).slice(0,10);
+            //console.log(data)
+            //console.log(data.sort(compare))
+            console.log("10")
+            console.log(curTop10)
+
+            
+            xScale.domain(curTop10.map(function(d,i){
+              return d['Vehicle'];
+
+            }));
+
+
+              
+             d3.select(".axis-x")
+                 .transition()
+                 .duration(500)
+                 .call(<any> xAxis);
+             var svg = d3.select("#svg0 g");
+
+             var rects = svg.selectAll("rect")
+                 .data(curTop10);
+
+             rects.exit()
+                 .transition()
+                 .duration(500)
+                 .style("opacity", 0)
+                 .remove(); //style here!remove();
+
+             rects.transition() //UPDATE
+                 .duration(500)
+                 .attr('x', function (d, i) {
+                     return xScale(d['Vehicle']);
+                 })
+                .attr('y', function (d) { return y(d['Count']); })
+                .attr('width', xScale.bandwidth)
+                 .attr('height', function (d) { return y2(d['Count']); })
+                 .attr('fill', '#FF4136')
+                 .style("fill-opacity",0.8);
+
+             rects.enter()
+                 .append("rect")
+                 .transition() //UPDATE
+                 .duration(500)
+                 .attr('x', function (d, i) {
+                    return xScale(d['Vehicle']);
+                })
+                .attr('y', function (d) { return y(d['Count']); })
+                 .attr('width', xScale.bandwidth)
+                 .attr('height', function (d) { return y2(d['Count']); })
+                 .attr('fill', '#FF4136');
+
+            // svg.selectAll(".axis-x text")
+            //     .data(curTop5.slice(0, 5))
+            //     .transition() //UPDATE
+            //     .duration(500)
+            //     .text(function (d) {
+            //         console.debug(d.Country);
+            //         return d.Country;
+            //     });
+
+             svg.select("#title")
+                 .attr("x", 450)
+                 .attr("y", -30)
+                 .style("font-size", "20px")
+                 .style("text-anchor", "middle")
+                 .text("Top 5 countries of Gender parity index for gross enrolment ratio out of 10 countries in 2014");
+
+
+      });
+   
+
+
+
+      d3.select("#third_reset").on("click", function(){
+        console.log(100)
+        console.log(data);
+
+        xScale.domain(data.map(function(d,i){
+          return d['Vehicle'];
+        }));
+        d3.select(".axis-x")
+                 .transition()
+                 .duration(500)
+                 .call(<any> xAxis);
+        
+        svg.selectAll(".axis-x .tick text")
+                 .attr("transform", "rotate(-75)")
+                 .attr("dx", "-4.5em")
+                 .attr("dy", "-0.9em")
+
+                 var svg0 = d3.select("#svg0 g");
+
+                 var rects = svg0.selectAll("rect")
+                     .data(data);
+    
+                 rects.exit()
+                     .transition()
+                     .duration(500)
+                     .style("opacity", 0)
+                     .remove(); //style here!remove();
+    
+                 rects.transition() //UPDATE
+                     .duration(500)
+                     .attr('x', function (d, i) {
+                         return xScale(d['Vehicle']);
+                     })
+                    .attr('y', function (d) { return y(d['Count']); })
+                    .attr('width', xScale.bandwidth)
+                     .attr('height', function (d) { return y2(d['Count']); })
+                     .attr('fill', '#FF4136');
+    
+                 rects.enter()
+                     .append("rect")
+                     .transition() //UPDATE
+                     .duration(500)
+                     .attr('x', function (d, i) {
+                        return xScale(d['Vehicle']);
+                    })
+                    .attr('y', function (d) { return y(d['Count']); })
+                     .attr('width', xScale.bandwidth)
+                     .attr('height', function (d) { return y2(d['Count']); })
+                     .attr('fill', '#FF4136')
+                     .style("fill-opacity",0.8);
+    
+                // svg.selectAll(".axis-x text")
+                //     .data(curTop5.slice(0, 5))
+                //     .transition() //UPDATE
+                //     .duration(500)
+                //     .text(function (d) {
+                //         console.debug(d.Country);
+                //         return d.Country;
+                //     });
+    
+                 svg.select("#title")
+                     .attr("x", 450)
+                     .attr("y", -30)
+                     .style("font-size", "20px")
+                     .style("text-anchor", "middle")
+                     .text("Top 5 countries of Gender parity index for gross enrolment ratio out of 10 countries in 2014");
+      });
 
 
 
     }
 });
+  }
+
+
+  private draw3():void{
+    var country = ["China","United States of America","Russia","Japan"]
   }
 
 }
