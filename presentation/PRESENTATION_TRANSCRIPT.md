@@ -5,6 +5,7 @@
 ## Slide 1
 Introduction
 - 10 words on what our visualization is about ： The Visualization presents information about universal satellites in multi-dimensional aspects.
+- We want attract non-specialists' interest on satellites and space science.
 ## Slide 2
 Topic
 - There are more than 1800 active satellites orbiting earth right now, taking pictures, broadcasting communication and navigation data, spying on every one living on the earth.  
