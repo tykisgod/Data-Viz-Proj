@@ -77,29 +77,29 @@
 - Additional information when mouse over satellites
 
 
-## Slide 16 - Third: Pie chart: Satellites of countries
-
-- Show ratio of each country's satellites
-- Additional information when mouse over satellites
-
-## Slide 17 - Third: Line chart: Trend of Lauching Satellites
+## Slide 16 - Third: Line chart: Trend of Lauching Satellites
 
 - Show trend of lauching satellites in years
 - Additional information when mouse over line 
 
-## Slide 18 - Third: Line chart: Trend(country part)
+## Slide 17 - Third: Line chart: Trend(country part)
 
 - Show trend of lauching satellites in years for each country
 - Additional information when mouse over line 
 
-## Slide 19 - Third: Bar chart: Launch site
+## Slide 18 - Third: Pie chart: Satellites of countries
 
-- Show number of satellites launched by each launch site
+- Show ratio of each country's satellites
+- Additional information when mouse over satellites
+
+## Slide 19 - Third: Bar chart: tpye of satellite
+
+- Show number of satellites launched by each type of satellite
 - Additional information when mouse over line 
 
-## Slide 20 - Third: Bar chart: Top 10 Launch site
+## Slide 20 - Third: Bar chart: Top 10 Launch tpye of satellite
 
-- Show number of satellites launched by Top 10 launch site 
+- Show number of satellites launched by Top 10 type of satellite
 - Additional information when mouse over line 
 
   ​
