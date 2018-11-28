@@ -37,22 +37,22 @@ The Visualization presents information about universal satellites in multi-dimen
 - For example: line chart: year and number of satellites; Pie chart: percentage of number of satellites of different countries/ others
 
 
-## DEV SETUP
+## DEV SETUP (Not finished)
 
 ### NODE AND NPM
 - Make sure you have latest Node and npm
 - Use `npm install` to install necessary packages for running the project
 
 ### D3 and JS
-- For first part, geojson is used to draw the world map
-- For second part, 
-- For third part,
+- For first part, d3.map is used to draw the world map
+- For second part, satellites are projected on their orbits
+- For third part, a combination of d3 layout and charts are used 
 
 ### ANGULAR
 - This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.5.
 
 ### BOOTSTRAP
-
+- Bootstrap is used to save effort when some common elements are needed like buttons.
 
 ## DEPLOYMENT
 - Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
