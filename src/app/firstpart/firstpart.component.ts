@@ -46,7 +46,7 @@ export class FirstpartComponent implements OnInit {
 
     function adapt_site_data(x) {
       if (x > 0) {
-        return Math.log(x * 100)
+        return Math.pow(Math.log(x * 100),1.5)
       } else {
         return x
       }
