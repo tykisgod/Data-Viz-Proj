@@ -320,7 +320,7 @@ export class FirstpartComponent implements OnInit {
               var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
               d3.json("src/assets/num_by_site_data/site_long_lat_data.json").then(function (site_long_lat: any) {
                 var site_num_data = site_all_in_one_by_year_data[possible_year_list.indexOf(x_value_of_circle)][x_value_of_circle]
-                console.log(site_num_data)
+                // console.log(site_num_data)
                 var site_long_lat_data = site_long_lat
                 // console.log(site_num_data)
                 // console.log(site_long_lat_data)
