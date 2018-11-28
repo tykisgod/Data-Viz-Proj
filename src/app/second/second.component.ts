@@ -490,7 +490,8 @@ export class SecondComponent implements OnInit {
         .attr("fill", function(d,i):any{
           return color_scale_country(""+country_number(d["Country of Operator/Owner"]))
         })
-
+        d3.select("#donut")
+        .attr("class", "btn btn-info")
         svg.selectAll(".legend_circles")
         .data(country_list)
         .enter()
@@ -717,6 +718,7 @@ export class SecondComponent implements OnInit {
 
       d3.select("#donut")
       .on("click", function(){
+        if (d3.select(this).attr("class") == "btn btn-info disabled") return;
         flag = 1;
         svg.selectAll(".satellites")
         .attr("saved_x2", function(d:any){
