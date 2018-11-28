@@ -35,8 +35,7 @@ export class FirstpartComponent implements OnInit {
     d3.selectAll('input').property('checked', true);
 
     var status = 0;
-    d3.select(".first").remove()
-    d3.select(".first").remove()
+    d3.selectAll(".first").remove()
     var svg = d3.select("#worldmap")
       .append("svg")
       .attr("class", "first")
