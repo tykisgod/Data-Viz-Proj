@@ -239,6 +239,11 @@ export class FirstpartComponent implements OnInit {
         all_in_one_by_year_data = json
       })
 
+      var site_all_in_one_by_year_data = Array()
+      d3.json("src/assets/num_by_site_data/site_all_in_one_by_year_data.json").then(function (json: any) {
+        site_all_in_one_by_year_data = json
+      })
+
       function get_year(d) {
         var percent = (d - 100) / (width - 2 * margin)
         return 1974 + Math.floor(44 * percent);
@@ -261,40 +266,14 @@ export class FirstpartComponent implements OnInit {
         // var original_time = date_now.getTime();
         if (possible_year_list.includes(x_value_of_circle) && show_country_lauch) {
           if (last_time != x_value_of_circle) {
-
             d3.json("src/assets/world_geojson.json").then(function (json: any) {
               temp_country_jsonfeatures = json.features
-              // var colorScale = d3.scaleSequential(d3.interpolateOranges).domain([0, 300]);
-              // var projection = d3.geoMercator().fitSize([width, height + 100], json);
-              // var path = d3.geoPath().projection(projection);
-              // console.log("src/assets/num_by_owner_data/num_by_owner_" + x_value_of_circle + ".json")
               var country = all_in_one_by_year_data[possible_year_list.indexOf(x_value_of_circle)][x_value_of_circle]
-              // console.log(country)
-
-              // var first_count = date_now.getTime();
-              // console.log("before deal with array" + first_count)
-
               var countryArray = new Array();
               countryArray = country.map(d => d.country);
               var valueArray = country.map(d => d.num);
               temp_country_valuearray = valueArray
               temp_country_countryArray = countryArray
-              // console.log(countryArray)
-              // console.log(valueArray)
-              // var jsonValueArray = new Array();
-
-              // var jsonCountryArray = new Array();
-              // for (var j = 0; j < countryArray.length; j++) {
-              //   for (var i = 0; i < json.features.length; i++) {
-              //     if (json.features[i]["properties"]["NAME"] == countryArray[j]) {
-              //       jsonCountryArray.push(json.features[i]);
-              //       jsonValueArray.push(valueArray[j]);
-              //     }
-              //   }
-              // }
-              // var second_count = date_now.getTime();
-              // console.log("after deal with array" + second_count)
-
 
               gg.selectAll(".states")
                 .data(json.features)
@@ -321,9 +300,66 @@ export class FirstpartComponent implements OnInit {
               // var third_count = date_now.getTime();
               // console.log("after redraw" + third_count)
             });
-            last_time = x_value_of_circle
           }
         }
+        if (possible_year_list.includes(x_value_of_circle) && show_launch_site) {
+          if (last_time != x_value_of_circle) {
+            d3.json("src/assets/world_geojson.json").then(function (json: any) {
+              var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
+              d3.json("src/assets/num_by_site_data/site_long_lat_data.json").then(function (site_long_lat: any) {
+                var site_num_data = site_all_in_one_by_year_data[possible_year_list.indexOf(x_value_of_circle)][x_value_of_circle]
+                console.log(site_num_data)
+                var site_long_lat_data = site_long_lat
+                // console.log(site_num_data)
+                // console.log(site_long_lat_data)
+                var site_data = new Array()
+
+                site_long_lat_data.forEach(site_location_ele => {
+                  site_num_data.forEach(site_num_ele => {
+                    if (site_location_ele["site"] == site_num_ele["site"]) {
+                      var location_array = new Array()
+                      var single_site_data = new Array()
+                      location_array.push(site_location_ele["long"], site_location_ele["lat"])
+                      single_site_data.push(site_location_ele["site"], site_num_ele["num"], location_array)
+                      site_data.push(single_site_data)
+                    }
+                  })
+                });
+                temp_site_data = site_data
+                svg.selectAll("circle")
+                  .data(site_data)
+                  .attr("class", "site_circle")
+                  .attr("cx", function (d: any, i) {
+                    return projection(d[2])[0]
+                  }
+                  )
+                  .attr("cy", function (d: any, i) {
+                    return projection(d[2])[1]
+                  }
+                  )
+                  .attr("r", function (d: any, i) {
+                    return adapt_site_data(d[1])
+                  }
+                  )
+                  .attr("fill", "blue")
+                  .attr("opacity", "0.7")
+                  .on("mouseover", function (d: any, i) {
+                    return tooltip_first.style("hidden", false).html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
+                  })
+                  .on("mousemove", function (d: any) {
+                    tooltip_first.classed("hidden", false)
+                      .style("top", (d3.event.pageY) + "px")
+                      .style("left", (d3.event.pageX + 10) + "px")
+                      .html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
+                  })
+                  .on("mouseout", function (d: any, i) {
+                    tooltip_first.classed("hidden", true);
+                  })
+              });
+            });
+          }
+        }
+        last_time = x_value_of_circle
         // var timecosume = date_now.getTime() - origin_time;
         // console.log("update use " + timecosume + " ms")
       }
