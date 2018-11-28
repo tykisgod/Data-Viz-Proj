@@ -14,12 +14,17 @@ export class ThirdComponent implements OnInit {
 
   ngOnInit() {
 
-    var svg = d3.select("#chart-svg1"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height"),
-    radius = Math.min(width/2, height/2) / 2,
+  
+    var winheight = window.innerHeight*0.8;
+    var winwidth = window.innerWidth*0.8;
+    var svg = d3.select("#chart-svg1")
+    .attr('height',winheight)
+    .attr('width',winwidth)
+    //width = +svg.attr("width");
+    //height = +svg.attr("height");
+    var radius = Math.min(winwidth/2, winheight/2);
 
-    g = svg.append("g").attr("transform", "translate(" + width /3 + "," + height / 3 + ")");
+   var g = svg.append("g").attr("transform", "translate(" + winwidth/2 + "," + winheight/2 + ")");
     var color = d3.scaleOrdinal(["#f44242", "#f4eb41", "#43f441", "#41f4e5", "#5241f4"]);
 
 
@@ -57,8 +62,8 @@ export class ThirdComponent implements OnInit {
       .innerRadius(0); //make != 0 for a donut chart
         
     var label = d3.arc()
-      .outerRadius(radius - 40)
-      .innerRadius(radius - 40);
+      .outerRadius(radius - 70)
+      .innerRadius(radius - 70);
         
     d3.csv("src/assets/third_data.csv",function(d:any){
       d.value = +d.value;
@@ -101,10 +106,10 @@ export class ThirdComponent implements OnInit {
             .style("top", mousePos[1] - 70 + "px")
             .select("#value")
             .attr("text-anchor", "middle")
-            .html(d.data['country'] + ": " + d.data['value']+"%");
+            .html(d.data['country'] + " own " + d.data['value']+" satellites <br>"+Math.round(d.data['value']*100/1886.0)+"% of world ");
           d3.select(".card-body").selectAll("p").remove()
-          d3.select(".card-body").append("p").text("The pie chart showing Comparation among 5 countries percent working hour > 40 hrs.")
-          d3.select(".card-body").append("p").text(d.data['country']+ " has "+d.data['value'] + "% citizens working more than 40 hrs in 1995!")
+          d3.select(".card-body").append("p").text("The pie chart showing  how many satellites these 5 countries percent own.")
+          d3.select(".card-body").append("p").text(d.data['country']+ " has "+Math.round(d.data['value']*100/1886.0) + "% satellites in world!")
           d3.select("#mainTooltip").classed("hidden", false);
       })
     .on("mouseout", function(d){
@@ -116,30 +121,37 @@ export class ThirdComponent implements OnInit {
           .duration(500)
           .attr('transform','translate(0,0)');
         d3.select(".card-body").selectAll("p").remove()
-        d3.select(".card-body").append("p").text("The pie chart showing Comparation among 5 countries percent working hour > 40 hrs.")
-        d3.select(".card-body").append("p").text("Pieces show the country and its percent of working over 40 hr population and detail will show when you point on.")
+        d3.select(".card-body").append("p").text("The pie chart showing  how many satellites these 5 countries percent own.")
+        d3.select(".card-body").append("p").text("Pieces show the country and its percent of satellites and detail will show when you point on.")
         d3.select("#mainTooltip").classed("hidden", true);
     });
 
       
       
       arc.append("text") 
-      .attr("transform", function(d:any) { return "translate(" + label.centroid(d) + ")"; })
-      .attr("dy", "0.35em")
+      .attr("transform", function(d:any) { return "translate(" +label.centroid(d) + ")"; })
+      .attr("dy", "0em")
       .text(function(d:any) { return d.data.country; })
       .style("text-anchor", "middle")
-      .attr("fill", "blue")
-      .attr("font-family", "sans-serif");
+      .attr("fill", "white")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "18px");
+
+
+
 
 
 
 
 
       })
+
+    
       
     this.draw();
     this.draw2();
     this.draw3();
+    this.draw4();
     
 
 
@@ -154,9 +166,9 @@ export class ThirdComponent implements OnInit {
 
   private draw():void{
 
-    var margin = {top:20,right:60,bottom:40,left:30};
-    var winheight = window.innerHeight;
-    var winwidth = window.innerWidth;
+    var margin = {top:40,right:60,bottom:60,left:40};
+    var winheight = window.innerHeight*0.8;
+    var winwidth = window.innerWidth*0.8;
     //var flag = -1;
     d3.select("#linechart").remove();
     d3.select('#line_chart').append('svg')
@@ -181,6 +193,7 @@ export class ThirdComponent implements OnInit {
 
     
     var svg = d3.select("#linechart")
+    .style('background-color', 'lightgrey')
         .append('g')
         .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
@@ -223,7 +236,10 @@ export class ThirdComponent implements OnInit {
       .attr("transform", "rotate(-90)")
       .attr("dx", "-2em")
       .attr("dy", "-0.5em")
-      //.attr
+      .attr("font-size", "15px")
+
+
+      
     svg.append("g")
           .attr("class", "yAxis")
           .call(yAxis)
@@ -234,8 +250,15 @@ export class ThirdComponent implements OnInit {
           .attr("dy", "0.7em")
           .attr("fill", "#000")
           .style("text-anchor", "end")
-          .attr("font-size", "10.5px")
-          .text("Percent work>40hr(%)");
+          .attr("font-size", "25px")
+            .text("number of Satellite per year");
+
+          
+    svg.selectAll(".yAxis .tick text")
+          // .attr("transform", "rotate(-90)")
+          // .attr("dx", "-2em")
+          // .attr("dy", "-0.5em")
+           .attr("font-size", "15px")
 
     var counLine = svg
           .append('g')
@@ -285,7 +308,7 @@ export class ThirdComponent implements OnInit {
              var odate = d['YearOfLaunch'];
              var ovalue = d['Number'];
              //Get this bar's x/y values, then augment for the tooltip
-             var xPosition = parseFloat(d3.select(this).attr("cx")) + 5;
+             var xPosition = parseFloat(d3.select(this).attr("cx")) +2.5;
              //console.log(xPosition)
              var yPosition = parseFloat(d3.select(this).attr("cy")) -10;
              //console.log(yPosition)
@@ -297,8 +320,8 @@ export class ThirdComponent implements OnInit {
                  .attr("y", yPosition)
                  .attr("text-anchor", "middle")
                  .attr("font-family", "sans-serif")
-                 .attr("font-size", "45px")
-                 .style("fill","black")
+                 .attr("font-size", "25px")
+                 .style("fill","#f44242")
                  .text(ovalue)
            })
            .on("mouseout", function() {
@@ -426,7 +449,7 @@ export class ThirdComponent implements OnInit {
       .attr("fill", "#000")
       .style("text-anchor", "end")
       .attr("font-size", "10.5px")
-      .text("Percent work>40hr(%)");
+      .text("number of Satellite");
 
 
     
@@ -449,7 +472,7 @@ export class ThirdComponent implements OnInit {
       .attr("y", -30)
       .style("font-size", "20px")
       .style("text-anchor", "middle")
-      .text(" All 10 countries of Gender parity index for gross enrolment ratio out of 10 countries in 2014");
+      .text(" The number of satellites launched by Satellite sites");
 
       d3.select("#top5").on("click", function(){
 
@@ -520,7 +543,7 @@ export class ThirdComponent implements OnInit {
                  .attr("y", -30)
                  .style("font-size", "20px")
                  .style("text-anchor", "middle")
-                 .text("Top 5 countries of Gender parity index for gross enrolment ratio out of 10 countries in 2014");
+                 .text("The number of satellites launched by Satellite sites");
 
 
       });
@@ -604,7 +627,280 @@ export class ThirdComponent implements OnInit {
 
 
   private draw3():void{
-    var country = ["China","United States of America","Russia","Japan"]
+
+    var flag = -1;
+    var margin = {top:40,right:100,bottom:60,left:60};
+    var winheight = window.innerHeight * 0.8;
+    var winwidth = window.innerWidth*0.8;
+    d3.select("#linechart_2").remove();
+    d3.select('#chart3').append('svg')
+        .attr('id','linechart_2')
+        .attr('height',winheight)
+        .attr('width',winwidth)
+        .style('background-color', 'lightgrey')
+
+    var width = parseInt(d3.select("#linechart_2").style("width")) - margin.left - margin.right;
+    var height = parseInt(d3.select("#linechart_2").style("height")) - margin.top - margin.bottom;
+
+
+    var xScale = d3.scalePoint()   ////// 
+            .range([0,width-20])
+           .padding(0.1)
+
+    var yScale = d3.scaleLinear()
+           //.base(5) 
+           //nice
+           .range([height, 0]);
+    var xAxis = d3.axisBottom(xScale);
+    var yAxis = d3.axisLeft(yScale);
+
+    var line = d3.line()
+        .x(function(d:any){return xScale(d['Year']);}) 
+        .y(function(d:any){return yScale(d['rate']);})
+
+    var svg = d3.select("#linechart_2")
+        .append('g')
+        .style('background-color', 'lightgrey')
+        .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+      //////
+
+    var color =d3.scaleOrdinal(d3.schemeCategory10);
+
+    var countries;
+         d3.csv("src/assets/third_line_countries.csv").then( function(data) {
+          data.forEach(function(d) {
+          d.Years = d.Years;
+          });  
+        console.log(data);
+
+        color.domain(d3.keys(data[0]).filter(function(key) { return key !=="Years"; }));//.filter(function(key) { return key !=="year"; }));
+        countries = color.domain().map(function(name) {
+          return {
+            name: name,
+            values: data.map(function(d) {
+            return {Year: d.Years, rate: +d[name]};
+            })
+
+          };
+        });
+
+        console.log(countries);
+        console.log(data);
+        xScale.domain(data.map(function(d) { return d['Years']; }));
+
+
+
+        var y_min = +d3.min(countries, function(c:any) { return d3.min(c['values'], function(v:any) { return +v['rate']; }); });//-10;
+        var y_max = +d3.max(countries, function(c:any) { return d3.max(c['values'], function(v:any) { return +v['rate']; }); })+5;
+        yScale.domain([y_min,y_max])
+        yAxis.ticks(5);  //// ticksµÄ×÷ÓÃ
+        xAxis.ticks(5);
+  
+        //console.log(xScale.domain);
+        svg.append("g")
+            .attr("class", "xAxis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis);
+    
+
+            svg.selectAll(".xAxis .tick text")
+            .attr("transform", "rotate(-90)")
+            .attr("dx", "-2em")
+            .attr("dy", "-0.5em")
+            .attr("font-size", "15px")
+
+
+          svg.append("g")
+            .attr("class", "yAxis")
+            .call(yAxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            //.attr("x",2)
+            .attr("y", 4)
+            .attr("dy", ".7em")
+            .attr("fill", "#000")
+            .style("text-anchor", "end")
+            .attr("font-size", "25px")
+            .text("number of Satellite per year");
+
+          svg.selectAll(".yAxis .tick text")
+            // .attr("transform", "rotate(-90)")
+            // .attr("dx", "-2em")
+            // .attr("dy", "-0.5em")
+             .attr("font-size", "15px")
+
+
+            var counLine = svg.selectAll(".counLine")
+            .data(countries)
+            .enter()
+            .append('g')
+            .attr('class','country');
+    
+            counLine.append('path')
+           // .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .attr("class", "line")
+            .attr("stroke-width","3px")
+            .attr("fill", "none") 
+            .attr("d", function(d:any) { return line(d.values); })
+            .attr("data-legend",function(d:any) { return d.name})
+            .style("stroke", function(d:any) { return color(d.name); })
+            .on('mouseover',function(d,i){
+              flag = i;
+                //console.log(flag);
+                d3.selectAll(".line").style("stroke-width", function(d,i){
+                  return i == flag?"5px":"2.5px";
+                })
+    
+            })
+    
+            counLine.append('circle')
+              .attr('class','cirlegend')
+              .attr('cx', width-50)
+              // .attr('cy',100)
+              .attr('cy', function (d, i) { return (i+1) * height* 0.03; })
+              .attr('r' ,'10')
+              .attr('fill', function(d:any) { return color(d.name); })
+      
+            counLine.append('text') 
+              .attr('class','llegend')
+              .attr("style","font-size:20px")
+              .attr('x', width-30)
+              .attr('y', function (d, i) { return (i+1) * height* 0.03;})
+              .text(function(d:any) { return d.name})
+              .attr('text-anchor','start')
+              .attr('alignment-baseline', 'middle')
+              //.attr("font-size", "20px")
+              .style("fill","black")
+
+
+            var pointCircle = counLine.append('g')
+              .datum(function(d){
+                return d['values'];
+              })
+              .selectAll('.pointCirle')
+              .data(function(d:any){return d;})
+              .enter()
+              .append('g')
+              .append('circle')
+              .attr("cx", function(d:any){
+                return xScale(d['Year']);})
+              .attr("cy",function(d,i){
+                return yScale(d['rate']);
+              })
+              .attr('r',4)
+              .style('fill','#f44242')
+              .style("fill-opacity", 0)
+              .on("mouseover", function(d){
+                d3.select(this)
+                .style("fill-opacity",0.8)
+                var odate = d['Year'];
+                var ovalue = d['rate'];
+                //Get this bar's x/y values, then augment for the tooltip
+                var xPosition = parseFloat(d3.select(this).attr("cx")) + 5;
+                var yPosition = parseFloat(d3.select(this).attr("cy")) -10;
+                //Create the tooltip label
+                svg.append("text")
+                    .attr("id", "tooltip")
+                    .attr("x", xPosition)
+                    .attr("y", yPosition)
+                    .attr("text-anchor", "middle")
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", "35px")
+                    .style("fill","#f44242")
+                    .text(ovalue)
+              })
+              .on("mouseout", function() {
+                //Remove the tooltip
+                d3.select("#tooltip").remove();
+                //Set opacity to 0
+                d3.select(this)
+                  .style("fill-opacity",0)
+                })
+    
+
+      });
+
+
+
+   
+  }
+
+  private draw4():void{
+    var margin = {left:40, right:40, buttom:40, top:40};
+    var winwidth = window.innerWidth;
+    var w = winwidth;
+    var h = w/2;
+    d3.csv("src/assets/third_3_1.csv").then(function(dataset:any){
+      var stack = d3.stack().keys(["USA", "United Kingdoms", "India", "Japan", "Others"]);
+      var series = stack(dataset);
+      var xScale = d3.scaleBand()
+      .domain(<any>d3.range(dataset.length))
+      .range([margin.left, winwidth-margin.right])
+      .padding(0.05);
+      
+      var yScale = d3.scaleLinear()
+      .domain([0,    
+          d3.max(dataset, function(d) {
+              return +d["USA"] + +d["United Kingdoms"] + +d["India"] + +d["Japan"] + +d["Others"];
+          })
+      ])
+      .range([h-margin.buttom, margin.top]);
+      //var vehicle_list = ["", "", "", "", "", ""];
+      var colors = d3.scaleOrdinal(d3.schemeCategory10)
+      console.log("???????")
+      var svg = d3.select("#line_chart_1")
+      .style('background-color', 'lightgrey')
+                  .append("svg")
+                  .attr("width", w)
+                  .attr("height", h);
+  
+      var groups = svg.selectAll("g")
+          .data(series)
+          .enter()
+          .append("g")
+          .style("fill", function(d, i) {
+              return <any>colors(i+"");
+          });
+  
+      // Add a rect for each data value
+      var rects = groups.selectAll("rect")
+          .data(function(d) { 
+              return d; 
+          })
+          .enter()
+          .append("rect")
+          .attr("x", function(d, i) {
+              return xScale(<any>i);
+          })
+          .attr("y", function(d) {
+              return yScale(d[1]);
+          })
+          .attr("height", function(d) {
+              return yScale(d[0]) - yScale(d[1]);
+          })
+          .attr("width", xScale.bandwidth());
+      svg.append('g')
+          .attr('class', 'x axis')
+          .attr("transform", "translate(0," + (h-margin.buttom) + ")")
+          .call(d3.axisBottom(xScale))
+
+      svg.append('g')
+          .attr("class", "y axis")
+          .attr("transform", "translate(" + (margin.left) + ",0)")
+          .call(d3.axisLeft(yScale))
+
+          
+          .append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("x",-50)
+          .attr("y", 4)
+          .attr("dy", "0.7em")
+          .attr("fill", "#000")
+          .style("text-anchor", "end")
+          .attr("font-size", "10.5px")
+          .text("number of Satellite");
+  
+  })
   }
 
 }
