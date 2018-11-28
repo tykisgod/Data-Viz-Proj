@@ -1,0 +1,112 @@
+[
+  {
+    "site": "Satish Dhawan Space Centre",
+    "long": 80.2243658,
+    "lat": 13.7258705
+  },
+  {
+    "site": "Guiana Space Center",
+    "long": -52.8008369,
+    "lat": 5.2067787
+  },
+  {
+    "site": "Cape Canaveral",
+    "long": -80.65262,
+    "lat": 28.5074136
+  },
+  {
+    "site": "Xichang Satellite Launch Center",
+    "long": 102.2434799,
+    "lat": 27.8907362
+  },
+  {
+    "site": "Baikonur Cosmodrome",
+    "long": 63.3030541,
+    "lat": 45.9645888
+  },
+  {
+    "site": "Vandenberg AFB",
+    "long": -120.5743504,
+    "lat": 34.7418091
+  },
+  {
+    "site": "Dombarovsky Air Base",
+    "long": 59.840212,
+    "lat": 51.094369
+  },
+  {
+    "site": "Plesetsk Cosmodrome",
+    "long": 40.5726521,
+    "lat": 62.9278573
+  },
+  {
+    "site": "Vostochny Cosmodrome",
+    "long": 128.3319234,
+    "lat": 51.8839402
+  },
+  {
+    "site": "Uchinoura Space Center",
+    "long": 131.073922,
+    "lat": 31.2512404
+  },
+  {
+    "site": "Taiyuan Launch Center",
+    "long": 111.608497,
+    "lat": 38.849086
+  },
+  {
+    "site": "Satish Dhawan Space Centre",
+    "long": 80.2243658,
+    "lat": 13.7258705
+  },
+  {
+    "site": "Jiuquan Satellite Launch Center",
+    "long": 100.278611,
+    "lat": 40.9675
+  },
+  {
+    "site": "Tanegashima Space Center",
+    "long": 130.9554574,
+    "lat": 30.3748696
+  },
+  {
+    "site": "Rocket Lab Launch Complex 1",
+    "long": -118.0344972,
+    "lat": 33.7481523
+  },
+  {
+    "site": "Svobodny Cosmodrome",
+    "long": 128,
+    "lat": 51.6999972
+  },
+  {
+    "site": "Kodiak Launch Complex",
+    "long": -152.337778,
+    "lat": 57.435833
+  },
+  {
+    "site": "Kwajalein Island",
+    "long": 167.7621259,
+    "lat": 8.6187183
+  },
+  {
+    "site": "Wallops Island Flight Facility",
+    "long": -75.466389,
+    "lat": 37.940194
+  },
+  {
+    "site": "Palmachim Launch Complex",
+    "long": 34.677991,
+    "lat": 31.8846906
+  },
+  {
+    "site": "Wenchang Satellite Launch Center",
+    "long": 110.951133,
+    "lat": 19.614492
+  },
+  {
+    "site": "Naro Space Center",
+    "long": 127.098808,
+    "lat": 34.5800961
+  }
+]
