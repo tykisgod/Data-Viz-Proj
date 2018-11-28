@@ -54,7 +54,7 @@ export class FirstpartComponent implements OnInit {
 
     var gg = svg.append("g")
     var path
-    var colorScale = d3.scaleSequential(d3.interpolateGreens).domain([0, 100]);
+    var colorScale = d3.scaleSequential(d3.interpolateBlues).domain([0, 100]);
     d3.json("src/assets/world_geojson.json").then(function (json: any) {
       var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
       path = d3.geoPath().projection(projection);
@@ -111,7 +111,7 @@ export class FirstpartComponent implements OnInit {
               return adapt_site_data(d[1])
             }
             )
-            .attr("fill", "blue")
+            .attr("fill", "red")
             .attr("opacity", "0.7")
             .on("mouseover", function (d: any, i) {
               return tooltip_first.style("hidden", false).html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
@@ -353,7 +353,7 @@ export class FirstpartComponent implements OnInit {
                     return adapt_site_data(d[1])
                   }
                   )
-                  .attr("fill", "blue")
+                  .attr("fill", "red")
                   .attr("opacity", "0.7")
                   .on("mouseover", function (d: any, i) {
                     return tooltip_first.style("hidden", false).html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
@@ -402,7 +402,7 @@ export class FirstpartComponent implements OnInit {
               return adapt_site_data(d[1])
             }
             )
-            .attr("fill", "blue")
+            .attr("fill", "red")
             .attr("opacity", "0.7")
             .on("mouseover", function (d: any, i) {
               return tooltip_first.style("hidden", false).html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
