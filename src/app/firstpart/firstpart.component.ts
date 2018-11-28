@@ -31,7 +31,7 @@ export class FirstpartComponent implements OnInit {
     var temp_country_jsonfeatures
     var temp_country_valuearray
     var temp_country_countryArray
-
+    var temp_site_data
     d3.selectAll('input').property('checked', true);
 
     var status = 0;
@@ -44,6 +44,14 @@ export class FirstpartComponent implements OnInit {
       .attr("height", window.innerHeight * 0.7),
       width = +svg.attr("width"),
       height = +svg.attr("height");
+
+    function adapt_site_data(x) {
+      if (x > 0) {
+        return Math.log(x * 100)
+      } else {
+        return x
+      }
+    }
 
     var gg = svg.append("g")
     var path
@@ -59,6 +67,68 @@ export class FirstpartComponent implements OnInit {
         .attr("fill", "white")
         .attr("stroke", "black")
         .attr("d", path);  //generate geographic path
+
+      // //这一大段要加到后面的dragmove里面，要用前面的checkbox改变的两个bool参数来判断是否进行这两个映射。这个可以不用函数表示。。就写在外面
+      // function slide_for_launch_site() {
+      //   d3.json("src/assets/world_geojson.json").then(function (json: any) {
+      //     var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
+      //   });
+      // }
+
+      d3.json("src/assets/num_by_site_data/site_all_in_one_1996.json").then(function (site_num: any) {
+        d3.json("src/assets/num_by_site_data/site_long_lat_data.json").then(function (site_long_lat: any) {
+          var site_long_lat_data = site_long_lat
+          var site_num_data = site_num
+          // console.log(site_num_data)
+          // console.log(site_long_lat_data)
+          var site_data = new Array()
+
+          site_long_lat_data.forEach(site_location_ele => {
+            site_num_data.forEach(site_num_ele => {
+              if (site_location_ele["site"] == site_num_ele["site"]) {
+                var location_array = new Array()
+                var single_site_data = new Array()
+                location_array.push(site_location_ele["long"], site_location_ele["lat"])
+                single_site_data.push(site_location_ele["site"], site_num_ele["num"], location_array)
+                site_data.push(single_site_data)
+              }
+            })
+          });
+          temp_site_data = site_data
+          svg.selectAll("circle")
+            .data(site_data)
+            .enter()
+            .append("circle")
+            .attr("class", "site_circle")
+            .attr("cx", function (d: any, i) {
+              return projection(d[2])[0]
+            }
+            )
+            .attr("cy", function (d: any, i) {
+              return projection(d[2])[1]
+            }
+            )
+            .attr("r", function (d: any, i) {
+              return adapt_site_data(d[1])
+            }
+            )
+            .attr("fill", "red")
+            .attr("opacity", "0.7")
+            .on("mouseover", function (d: any, i) {
+              return tooltip_first.style("hidden", false).html("fuck");
+            })
+            .on("mousemove", function (d: any) {
+              tooltip_first.classed("hidden", false)
+                .style("top", (d3.event.pageY) + "px")
+                .style("left", (d3.event.pageX + 10) + "px")
+                .html("fuck");
+            })
+            .on("mouseout", function (d: any, i) {
+              tooltip_first.classed("hidden", true);
+            })
+        });
+      });
+
       d3.json("src/assets/num_by_owner_data/num_by_owner_1996.json").then(function (country: any) {
         var countryArray = new Array();
         countryArray = country.map(d => d.country);
@@ -113,40 +183,11 @@ export class FirstpartComponent implements OnInit {
 
     slide_for_total_num()
 
+
+
     function slide_for_total_num() {
 
-      //这一大段要加到后面的dragmove里面，要用前面的checkbox改变的两个bool参数来判断是否进行这两个映射。这个可以不用函数表示。。就写在外面
-      function slide_for_launch_site() {
-        d3.json("src/assets/world_geojson.json").then(function (json: any) {
-          var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
-          // gg.selectAll(".states")
-          //   .data(d3.range(5, 90, 5))
-          //   .enter()
-          //   .append("path")
-          //   .style("fill", "brown")
-          //   .style("fill-opacity", .7)
-          //   .attr("d", function (r) {
-          //     return path(circle.center([13.7258705, 80.2243658]).radius(500));
-          //   })
-          var a: any = [80.2243658, 13.7258705]
-          // var circle:any = d3.geoCircle()
-          // svg.append("g")
-          //   .attr("class", "circle a")
-          //   .selectAll("path")
-          //   .data([10])
-          //   .enter()
-          //   .append("path")
-          //   .attr("d", function (r) { return path(circle.center(a).radius(r)()); })
-          //   .attr('fill','red')
-          //   .attr('opacity','0.7')
-          svg.append("circle")
-            .attr("class", "site_circle")
-            .attr("cx", projection(a)[0])
-            .attr("cy", projection(a)[1])
-            .attr("r", 5)
-            .attr("opacity", "0.7")
-        });
-      }
+      // slide_for_launch_site()
 
       var radius = 20;
       var margin = 100;
@@ -294,13 +335,45 @@ export class FirstpartComponent implements OnInit {
 
     function update_by_launch_site() {
       if (d3.select("#by_launch_site").property("checked")) {
-        console.log("by_launch_site: true")
-        show_launch_site = true;
-        // slide_for_launch_site()
+        d3.json("src/assets/world_geojson.json").then(function (json: any) {
+          var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
+          console.log("by_launch_site: true")
+          show_launch_site = true;
+          svg.selectAll("circle")
+            .data(temp_site_data)
+            .enter()
+            .append("circle")
+            .attr("class", "site_circle")
+            .attr("cx", function (d: any, i) {
+              return projection(d[2])[0]
+            }
+            )
+            .attr("cy", function (d: any, i) {
+              return projection(d[2])[1]
+            }
+            )
+            .attr("r", function (d: any, i) {
+              return adapt_site_data(d[1])
+            }
+            )
+            .attr("fill", "red")
+            .attr("opacity", "0.7")
+            .on("mouseover", function (d: any, i) {
+              return tooltip_first.style("hidden", false).html("fuck");
+            })
+            .on("mousemove", function (d: any) {
+              tooltip_first.classed("hidden", false)
+                .style("top", (d3.event.pageY) + "px")
+                .style("left", (d3.event.pageX + 10) + "px")
+                .html("fuck");
+            })
+            .on("mouseout", function (d: any, i) {
+              tooltip_first.classed("hidden", true);
+            })
+        })
       } else {
         console.log("by_launch_site: false")
         show_launch_site = false;
-        //这个地方应该挪到开关那里
         svg.selectAll(".site_circle").remove()
       }
     }
@@ -309,9 +382,6 @@ export class FirstpartComponent implements OnInit {
       if (d3.select("#by_country").property("checked")) {
         console.log("show_country_lauch: true")
         show_country_lauch = true;
-
-
-
         gg.selectAll(".states")
           .data(temp_country_jsonfeatures)
           .enter()
@@ -346,7 +416,7 @@ export class FirstpartComponent implements OnInit {
             d3.select(this).attr("stroke-width", 1);
             tooltip_first.classed("hidden", true);
           })
-          
+
       } else {
         console.log("show_country_lauch: false")
         gg.selectAll(".states").remove()
@@ -355,6 +425,5 @@ export class FirstpartComponent implements OnInit {
         show_country_lauch = false;
       }
     }
-
   }
 }
