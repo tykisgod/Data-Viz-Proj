@@ -199,6 +199,7 @@ export class FirstpartComponent implements OnInit {
 
         var svg_slider = d3.select("#worldmap")
           .append("svg")
+          .attr("id", "slider")
           .attr("class", "first")
           .attr("width", width)
           .attr("height", 200)
@@ -210,6 +211,7 @@ export class FirstpartComponent implements OnInit {
             x: width / 2,
             y: height / 2
           });
+        var possible_year_list:any = [1974, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018];
 
         var line = svg_slider.append("line")
           .attr("x1", x1)
@@ -219,6 +221,20 @@ export class FirstpartComponent implements OnInit {
           .style("stroke", "black")
           .style("stroke-linecap", "round")
           .style("stroke-width", 5);
+
+        var xaxisx = d3.scaleBand().range([x1, x2]).domain(possible_year_list).padding(0);
+
+        d3.select("#slider")
+          .append("g")
+          .attr("class", "axis axis--x")
+          .attr("transform", "translate(0,"+100+")")
+          .call(d3.axisBottom(xaxisx));
+
+        // var xAxis = d3.axisBottom().scale(x);
+
+        // svg.append("g")
+        //   .attr("transform", "translate(0," + height + ")")
+        //   .call(xAxis);
 
         var circle = svg_slider.append("circle")
           .attr("id", "slider_circle")
@@ -230,7 +246,6 @@ export class FirstpartComponent implements OnInit {
 
         var last_time = -1;
 
-        var possible_year_list = [1974, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018];
 
         var all_in_one_by_year_data = Array()
         d3.json("src/assets/num_by_owner_data/all_in_one_by_year_data.json").then(function (json: any) {
@@ -367,40 +382,40 @@ export class FirstpartComponent implements OnInit {
 
       function update_by_launch_site() {
         if (d3.select("#by_launch_site").property("checked")) {
-            var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
-            console.log("by_launch_site: true")
-            show_launch_site = true;
-            svg.selectAll("circle")
-              .data(temp_site_data)
-              .enter()
-              .append("circle")
-              .attr("class", "site_circle")
-              .attr("cx", function (d: any, i) {
-                return projection(d[2])[0]
-              }
-              )
-              .attr("cy", function (d: any, i) {
-                return projection(d[2])[1]
-              }
-              )
-              .attr("r", function (d: any, i) {
-                return adapt_site_data(d[1])
-              }
-              )
-              .attr("fill", "blue")
-              .attr("opacity", "0.7")
-              .on("mouseover", function (d: any, i) {
-                return tooltip_first.style("hidden", false).html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
-              })
-              .on("mousemove", function (d: any) {
-                tooltip_first.classed("hidden", false)
-                  .style("top", (d3.event.pageY) + "px")
-                  .style("left", (d3.event.pageX + 10) + "px")
-                  .html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
-              })
-              .on("mouseout", function (d: any, i) {
-                tooltip_first.classed("hidden", true);
-              })
+          var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
+          console.log("by_launch_site: true")
+          show_launch_site = true;
+          svg.selectAll("circle")
+            .data(temp_site_data)
+            .enter()
+            .append("circle")
+            .attr("class", "site_circle")
+            .attr("cx", function (d: any, i) {
+              return projection(d[2])[0]
+            }
+            )
+            .attr("cy", function (d: any, i) {
+              return projection(d[2])[1]
+            }
+            )
+            .attr("r", function (d: any, i) {
+              return adapt_site_data(d[1])
+            }
+            )
+            .attr("fill", "blue")
+            .attr("opacity", "0.7")
+            .on("mouseover", function (d: any, i) {
+              return tooltip_first.style("hidden", false).html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
+            })
+            .on("mousemove", function (d: any) {
+              tooltip_first.classed("hidden", false)
+                .style("top", (d3.event.pageY) + "px")
+                .style("left", (d3.event.pageX + 10) + "px")
+                .html("<p>Site: " + d[0] + '</p><p>' + 'Num of Launch:' + d[1] + "</p>");
+            })
+            .on("mouseout", function (d: any, i) {
+              tooltip_first.classed("hidden", true);
+            })
         } else {
           console.log("by_launch_site: false")
           show_launch_site = false;
