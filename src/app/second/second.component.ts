@@ -64,6 +64,59 @@ export class SecondComponent implements OnInit {
     .attr("stroke", "none")
     svg.selectAll(".altitude .tick line")
     .attr("stroke", "none")
+
+    var count_g = svg.append("g")
+    .attr("transform", "translate(" + (width / 2) + "," +0 + ")")
+
+    count_g.append("text")
+    .attr("id", "leo_count")
+    .attr("class", "orbit_count")
+    .attr("radius", earth_radius+1700)
+    .attr("x", function(){
+      return radius_scale_earth(+d3.select(this).attr("radius"))
+    })
+    .attr('alignment-baseline', 'hanging')
+    .text("←Number:1186")
+    .attr("font-size", 12)
+    .transition()
+    .delay(500)
+    .duration(2000)
+    .attr("x", function(){
+      return radius_scale_geo(+d3.select(this).attr("radius"))
+    })
+    count_g.append("text")
+    .attr("id", "meo_count")
+    .attr("class", "orbit_count")
+    .attr("radius", earth_radius+24000)
+    .attr("x", function(){
+      return radius_scale_earth(+d3.select(this).attr("radius"))
+    })
+    .attr('alignment-baseline', 'hanging')
+    .text("←Number:112")
+    .attr("font-size", 12)
+    .transition()
+    .delay(500)
+    .duration(2000)
+    .attr("x", function(){
+      return radius_scale_geo(+d3.select(this).attr("radius"))
+    })
+    count_g.append("text")
+    .attr("id", "geo_count")
+    .attr("class", "orbit_count")
+    .attr("radius", earth_radius+38000)
+    .attr("x", function(){
+      return radius_scale_earth(+d3.select(this).attr("radius"))
+    })
+    .attr('alignment-baseline', 'hanging')
+    .text("←Number:548")
+    .attr("font-size", 12)
+    .transition()
+    .delay(500)
+    .duration(2000)
+    .attr("x", function(){
+      return radius_scale_geo(+d3.select(this).attr("radius"))
+    })
+
     var color_scale_country = d3.scaleOrdinal(d3.schemeCategory10);
     var color_scale_purpose = d3.scaleOrdinal(d3.schemeCategory10);
     var color_scale_user = d3.scaleOrdinal(d3.schemeCategory10);
@@ -192,6 +245,7 @@ export class SecondComponent implements OnInit {
     .attr("r", radius_scale_geo(6400+35200))
 
 
+
     d3.csv("src/assets/full_data.csv").then(function(data){
       svg.selectAll(".satellites")
       .data(data)
@@ -288,6 +342,14 @@ export class SecondComponent implements OnInit {
         svg.selectAll(".altitude .tick line")
         .attr("stroke", "none")
 
+        svg.selectAll(".orbit_count")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .attr("x", function(){
+          return radius_scale_leo(+d3.select(this).attr("radius"))
+        })
+
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
@@ -360,6 +422,14 @@ export class SecondComponent implements OnInit {
         svg.selectAll(".altitude .tick line")
         .attr("stroke", "none")
         
+        svg.selectAll(".orbit_count")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .attr("x", function(){
+          return radius_scale_meo(+d3.select(this).attr("radius"))
+        })
+
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
@@ -433,6 +503,14 @@ export class SecondComponent implements OnInit {
         svg.selectAll(".altitude .tick line")
         .attr("stroke", "none")
         
+        svg.selectAll(".orbit_count")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .attr("x", function(){
+          return radius_scale_geo(+d3.select(this).attr("radius"))
+        })
+
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
@@ -500,7 +578,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_circles")
         .attr("cx", width+width)
         .attr("cy", function(d,i){
-          return i*50+20;
+          return i*50+50;
         })
         .attr("r", 5)
         .attr("fill", function(d,i){
@@ -513,7 +591,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_labels")
         .attr("x", width+width)
         .attr("y", function(d,i){
-          return i*50+20;
+          return i*50+50;
         })
         .attr("fill", function(d,i){
           return color_scale_country(""+i);
@@ -580,7 +658,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_circles")
         .attr("cx", width+width)
         .attr("cy", function(d,i){
-          return i*50+20;
+          return i*50+50;
         })
         .attr("r", 5)
         .attr("fill", function(d,i){
@@ -593,7 +671,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_labels")
         .attr("x", width+width)
         .attr("y", function(d,i){
-          return i*50+20;
+          return i*50+50;
         })
         .attr("fill", function(d,i){
           return "black";
@@ -610,7 +688,7 @@ export class SecondComponent implements OnInit {
         .duration(1400)
         .attr("cx", width)
         .attr("cy", function(d,i){
-          return i*50+20;
+          return i*50+50;
         })
         .attr("r", 5)
         .attr("fill", function(d,i){
@@ -623,7 +701,7 @@ export class SecondComponent implements OnInit {
         .duration(1500)
         .attr("x", width+5)
         .attr("y", function(d,i){
-          return i*50+20;
+          return i*50+50;
         })
         .attr("fill", function(d,i){
           return color_scale_purpose(""+i);
@@ -653,7 +731,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_circles")
         .attr("cx", width+width)
         .attr("cy", function(d,i){
-          return i*50+20;
+          return i*50+50;
         })
         .attr("r", 5)
         .attr("fill", function(d,i){
@@ -666,7 +744,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_labels")
         .attr("x", width+width)
         .attr("y", function(d,i){
-          return i*50+20;
+          return i*50+50;
         })
         .attr("fill", function(d,i){
           return color_scale_user(""+i);
@@ -837,6 +915,13 @@ export class SecondComponent implements OnInit {
         .attr("stroke", "none")
         svg.selectAll(".altitude .tick line")
         .attr("stroke", "none")
+        svg.selectAll(".orbit_count")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .attr("x", function(){
+          return radius_scale_geo(+d3.select(this).attr("radius"))
+        })
 
         svg.selectAll(".satellites")
         .transition()
@@ -880,6 +965,19 @@ export class SecondComponent implements OnInit {
         .delay(500)
         .duration(2000)
         .attr("r", radius_scale_geo(6400+35200))
+
+        svg.selectAll(".legend_labels")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .attr("x", width+width)
+        .remove()
+        svg.selectAll(".legend_circles")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .attr("cx", width+width)
+        .remove()
       })
     })
   }
