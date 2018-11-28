@@ -1,7 +1,12 @@
 # Presentation Transcript
 
 ## Cover
-
+- Project name: Visualization on orbiting satellite data
+- Group name: Kepler
+- Member name and email:
+    - Yukang Tian, yukangti@usc.edu
+    - Yuning Zhu, zhuyunin@usc.edu
+    - Chen Lou, chenlou@usc.edu
 ## Slide 1
 Introduction
 - 10 words on what our visualization is about ： The Visualization presents information about universal satellites in multi-dimensional aspects.
