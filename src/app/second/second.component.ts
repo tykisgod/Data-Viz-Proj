@@ -40,7 +40,7 @@ export class SecondComponent implements OnInit {
     var medium_earth_radius = 25000;
     var geosynchronous_radius = 40000;
     var country_list = ["United States", "China", "Russia", "Japan", "Others"];
-    var purpose_list = ["Communications", "Earth Observation", "Tech Dev", "Navigation", "Space Science", "Others"];
+    var purpose_list = ["Communications", "Earth Observation", "Technology Development", "Navigation/Global Positioning", "Space Science", "Others"];
     var user_list = ["Commercial", "Government", "Military", "Civil", "Multiple"];
 
     var radius_scale_earth = d3.scaleLinear().domain([0,earth_radius]).range([0,height]);
@@ -320,7 +320,7 @@ export class SecondComponent implements OnInit {
       d3.select("#show_low")
       .on("click", function(){
         orbit_flag = "leo";
-
+        d3.selectAll("#chooseorbit").text("Low Earth Orbit");
         svg.select(".altitude")
         .transition()
         .delay(500)
@@ -333,7 +333,6 @@ export class SecondComponent implements OnInit {
         .attr("text-anchor", "center")
         .attr("x", "-1em")
         .text(function(d,i){
-            console.log("text" + d);
             return +d-6400 + "KM";
         })
         .attr("font-size", 12)
@@ -363,7 +362,14 @@ export class SecondComponent implements OnInit {
         .attr("cy", function(d:any){
           return radius_scale_leo(+d3.select(this).attr(flag?"saved_y2":"saved_y"));
         })
-
+        .attr("opacity", function(d, i){
+          if(d["Class of Orbit"] == "LEO"){
+            return 0.85;
+          }
+          else{
+            return 0.2;
+          }
+        })
 
         svg.selectAll(".earth")
         .transition()
@@ -380,15 +386,18 @@ export class SecondComponent implements OnInit {
         .duration(2000)
         .attr("stroke-width", radius_scale_leo(1311))
         .attr("r", radius_scale_leo(6400+936))
+        .attr("opacity", 1)
 
         arc2.outerRadius(radius_scale_leo(6400+7815))
         .innerRadius(radius_scale_leo(6400+23551))
+        
 
         svg.select("#meo")
         .transition()
         .delay(500)
         .duration(2000)
         .attr("d", arc2)
+        .attr("opacity", 0.5)
 
   
         svg.select("#geo")
@@ -396,11 +405,13 @@ export class SecondComponent implements OnInit {
         .delay(500)
         .duration(2000)
         .attr("r", radius_scale_leo(6400+35200))
+        .attr("opacity", 0.5)
       })
 
       d3.select("#show_medium")
       .on("click", function(){
         orbit_flag = "meo";
+        d3.selectAll("#chooseorbit").text("Medium Earth Orbit");
 
         svg.select(".altitude")
         .transition()
@@ -443,6 +454,14 @@ export class SecondComponent implements OnInit {
         .attr("cy", function(d:any){
           return radius_scale_meo(+d3.select(this).attr(flag?"saved_y2":"saved_y"));
         })
+        .attr("opacity", function(d, i){
+          if(d["Class of Orbit"] == "MEO"){
+            return 1;
+          }
+          else{
+            return 0.2;
+          }
+        })
 
 
         svg.selectAll(".earth")
@@ -460,6 +479,7 @@ export class SecondComponent implements OnInit {
         .duration(2000)
         .attr("stroke-width", radius_scale_meo(1311))
         .attr("r", radius_scale_meo(6400+936))
+        .attr("opacity", 0.5)
 
         arc2.outerRadius(radius_scale_meo(6400+7815))
         .innerRadius(radius_scale_meo(6400+23551))
@@ -469,6 +489,7 @@ export class SecondComponent implements OnInit {
         .delay(500)
         .duration(2000)
         .attr("d", arc2)
+        .attr("opacity", 1)
 
   
         svg.select("#geo")
@@ -476,11 +497,13 @@ export class SecondComponent implements OnInit {
         .delay(500)
         .duration(2000)
         .attr("r", radius_scale_meo(6400+35200))
+        .attr("opacity", 0.5)
       })
 
       d3.select("#show_g")
       .on("click", function(){
         orbit_flag = "geo";
+        d3.selectAll("#chooseorbit").text("Geosynchronous Orbit");
 
         svg.select(".altitude")
         .transition()
@@ -494,7 +517,6 @@ export class SecondComponent implements OnInit {
         .attr("x", "-1em")
         .attr("text-anchor", "center")
         .text(function(d,i){
-            console.log("text" + d);
             return +d-6400 + "KM";
         })
         .attr("font-size", 12)
@@ -524,6 +546,14 @@ export class SecondComponent implements OnInit {
         .attr("cy", function(d:any){
           return radius_scale_geo(+d3.select(this).attr(flag?"saved_y2":"saved_y"));
         })
+        .attr("opacity", function(d, i){
+          if(d["Class of Orbit"] == "GEO"){
+            return 0.85;
+          }
+          else{
+            return 0.2;
+          }
+        })
 
 
         svg.selectAll(".earth")
@@ -541,6 +571,7 @@ export class SecondComponent implements OnInit {
         .duration(2000)
         .attr("stroke-width", radius_scale_geo(1311))
         .attr("r", radius_scale_geo(6400+936))
+        .attr("opacity", 0.5)
 
         arc2.outerRadius(radius_scale_geo(6400+7815))
         .innerRadius(radius_scale_geo(6400+23551))
@@ -550,6 +581,7 @@ export class SecondComponent implements OnInit {
         .delay(500)
         .duration(2000)
         .attr("d", arc2)
+        .attr("opacity", 0.5)
 
   
         svg.select("#geo")
@@ -557,10 +589,13 @@ export class SecondComponent implements OnInit {
         .delay(500)
         .duration(2000)
         .attr("r", radius_scale_geo(6400+35200))
+        .attr("opacity", 1)
       })
 
       d3.select("#second_by_country")
       .on("click", function(){
+
+        d3.select("#colorby").text("Color by Owner")
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
@@ -640,10 +675,64 @@ export class SecondComponent implements OnInit {
           return d;
         })
 
+        svg.selectAll(".legend_circles")
+        .on("mouseover", function(dd,ii){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(d,i){
+            if (+country_number(d["Country of Operator/Owner"]) != ii){
+              // console.log(d["Purpose"])
+              // console.log(+purpose_number(d["Purpose"]))
+              // console.log(i)
+              return "none";
+            }
+            else{
+              return color_scale_country(""+ii);
+            }
+          })
+        })
+        .on("mouseout", function(d,i){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(dd,ii):any{
+            return color_scale_country(""+country_number(dd["Country of Operator/Owner"]))
+          })
+        })        
+        svg.selectAll(".legend_labels")
+        .on("mouseover", function(dd,ii){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(d,i){
+            if (+country_number(d["Country of Operator/Owner"]) != ii){
+              return "none";
+            }
+            else{
+              return color_scale_country(""+ii);
+            }
+          })
+        })
+        .on("mouseout", function(d,i){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(dd,ii):any{
+            return color_scale_country(""+country_number(dd["Country of Operator/Owner"]))
+          })
+        })
+
       })
 
       d3.select("#second_by_purpose")
       .on("click", function(){
+        d3.select("#colorby").text("Color by Purpose")
+
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
@@ -694,6 +783,34 @@ export class SecondComponent implements OnInit {
         .attr("fill", function(d,i){
           return color_scale_purpose(""+i);
         })
+
+        svg.selectAll(".legend_circles")
+        .on("mouseover", function(dd,ii){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(d,i){
+            if (+purpose_number(d["Purpose"]) != ii){
+              // console.log(d["Purpose"])
+              // console.log(+purpose_number(d["Purpose"]))
+              // console.log(i)
+              return "none";
+            }
+            else{
+              return color_scale_purpose(""+ii);
+            }
+          })
+        })
+        .on("mouseout", function(d,i){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(dd,ii):any{
+            return color_scale_purpose(""+purpose_number(dd["Purpose"]))
+          })
+        })
         svg.selectAll(".legend_labels")
         .data(purpose_list)
         .transition()
@@ -711,11 +828,40 @@ export class SecondComponent implements OnInit {
         .text(function(d){
           return d;
         })
+        svg.selectAll(".legend_labels")
+        .on("mouseover", function(dd,ii){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(d,i){
+            if (+purpose_number(d["Purpose"]) != ii){
+              // console.log(d["Purpose"])
+              // console.log(+purpose_number(d["Purpose"]))
+              // console.log(i)
+              return "none";
+            }
+            else{
+              return color_scale_purpose(""+ii);
+            }
+          })
+        })
+        .on("mouseout", function(d,i){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(dd,ii):any{
+            return color_scale_purpose(""+purpose_number(dd["Purpose"]))
+          })
+        })
 
       })
 
       d3.select("#second_by_user")
       .on("click", function(){
+        d3.select("#colorby").text("Color by User")
+
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
@@ -793,6 +939,57 @@ export class SecondComponent implements OnInit {
           return d;
         })
 
+        svg.selectAll(".legend_circles")
+        .on("mouseover", function(dd,ii){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(d,i){
+            if (+user_number(d["Users"]) != ii){
+              // console.log(d["Purpose"])
+              // console.log(+purpose_number(d["Purpose"]))
+              // console.log(i)
+              return "none";
+            }
+            else{
+              return color_scale_user(""+ii);
+            }
+          })
+        })
+        .on("mouseout", function(d,i){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(dd,ii):any{
+            return color_scale_user(""+user_number(dd["Users"]))
+          })
+        })        
+        svg.selectAll(".legend_labels")
+        .on("mouseover", function(dd,ii){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(d,i){
+            if (+user_number(d["Users"]) != ii){
+              return "none";
+            }
+            else{
+              return color_scale_user(""+ii);
+            }
+          })
+        })
+        .on("mouseout", function(d,i){
+          d3.selectAll(".satellites")
+          .transition()
+          .delay(500)
+          .duration(2000)
+          .attr("fill", function(dd,ii):any{
+            return color_scale_user(""+user_number(dd["Users"]))
+          })
+        })
       })
 
       d3.select("#donut")
@@ -891,9 +1088,10 @@ export class SecondComponent implements OnInit {
       .on("click", function(){
         flag = 0;
         orbit_flag = "geo";
-
+        d3.select("#chooseorbit").text("Choose Orbit")
         d3.select("#donut")
         .attr("class", "btn btn-info disabled")
+        d3.select("#colorby").text("Color By")
 
         svg.select(".altitude")
         .transition()
@@ -907,7 +1105,6 @@ export class SecondComponent implements OnInit {
         .attr("x", "-1em")
         .attr("text-anchor", "center")
         .text(function(d,i){
-            console.log("text" + d);
             return +d-6400 + "KM";
         })
         .attr("font-size", 12)
@@ -934,6 +1131,7 @@ export class SecondComponent implements OnInit {
         .attr("cy", function(d:any){
           return radius_scale_geo(+d3.select(this).attr("saved_y"));
         })
+        .attr("opacity", 0.6)
 
         svg.selectAll(".earth")
         .transition()
@@ -950,6 +1148,7 @@ export class SecondComponent implements OnInit {
         .duration(2000)
         .attr("stroke-width", radius_scale_geo(1311))
         .attr("r", radius_scale_geo(6400+936))
+        .attr("opacity", 1)
 
         arc2.outerRadius(radius_scale_geo(6400+7815))
         .innerRadius(radius_scale_geo(6400+23551))
@@ -959,12 +1158,14 @@ export class SecondComponent implements OnInit {
         .delay(500)
         .duration(2000)
         .attr("d", arc2)
+        .attr("opacity", 1)
 
         svg.select("#geo")
         .transition()
         .delay(500)
         .duration(2000)
         .attr("r", radius_scale_geo(6400+35200))
+        .attr("opacity", 1)
 
         svg.selectAll(".legend_labels")
         .transition()
