@@ -732,7 +732,8 @@ export class SecondComponent implements OnInit {
       d3.select("#second_by_purpose")
       .on("click", function(){
         d3.select("#colorby").text("Color by Purpose")
-
+        d3.select("#donut")
+        .attr("class", "btn btn-info disabled")
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
@@ -861,7 +862,8 @@ export class SecondComponent implements OnInit {
       d3.select("#second_by_user")
       .on("click", function(){
         d3.select("#colorby").text("Color by User")
-
+        d3.select("#donut")
+        .attr("class", "btn btn-info disabled")
         svg.selectAll(".satellites")
         .transition()
         .delay(500)
