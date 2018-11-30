@@ -34,8 +34,8 @@ export class SecondComponent implements OnInit {
       .attr("width", winwidth)
       .attr("height", winwidth/2),
       width = +svg.attr("width")-margin.left-margin.right,
-      height = +svg.attr("height")-margin.top-margin.bottom;
-    var radius_cate = winwidth / 8;
+      height = +svg.attr("height")-margin.top-margin.bottom,
+      label_padding = height * 0.05;
     svg.append("rect")
     .attr("width", winwidth)
     .attr("height", winwidth/2)
@@ -627,7 +627,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_circles")
         .attr("cx", width+width)
         .attr("cy", function(d,i){
-          return i*50+50;
+          return i*label_padding+label_padding;
         })
         .attr("r", 5)
         .attr("fill", function(d,i){
@@ -640,7 +640,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_labels")
         .attr("x", width+width)
         .attr("y", function(d,i){
-          return i*50+50;
+          return i*label_padding+label_padding;
         })
         .attr("fill", function(d,i){
           return color_scale_country(""+i);
@@ -741,62 +741,117 @@ export class SecondComponent implements OnInit {
           })
         })
 
-        d3.json("src/assets/second_bycountry.json").then(function(data:any){
-          svg.select("#second_purpose_g")
-          .transition()
-          .delay(500)
-          .duration(2000)
-          .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
-          .remove();
-          svg.select("#second_user_g")
-          .transition()
-          .delay(500)
-          .duration(2000)
-          .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
-          .remove();
-          var second_country_g = svg.append("g")
-          .attr("id", "second_country_g")
-          .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")");
-          var pie = d3.pie<any>()
-          .sort(null)
-          .value(d=>d.value);
-          var path_country = d3.arc()
-          .outerRadius(winwidth/9)
-          .innerRadius(0);
+        // d3.json("src/assets/second_bycountry.json").then(function(data:any){
+        //   svg.select("#second_purpose_g")
+        //   .transition()
+        //   .delay(500)
+        //   .duration(2000)
+        //   .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
+        //   .remove();
+        //   svg.select("#second_user_g")
+        //   .transition()
+        //   .delay(500)
+        //   .duration(2000)
+        //   .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
+        //   .remove();
+        //   var second_country_g = svg.append("g")
+        //   .attr("id", "second_country_g")
+        //   .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")");
+        //   var pie = d3.pie<any>()
+        //   .sort(null)
+        //   .value(d=>d.value);
+        //   var path_country = d3.arc()
+        //   .outerRadius(winwidth/9)
+        //   .innerRadius(0);
       
-          var label = d3.arc()
-          .outerRadius(winwidth/10.5)
-          .innerRadius(winwidth/10.5);
-          var arc = second_country_g.selectAll(".bycountryarc")
-          .data(pie(data))
-          .enter()
-          .append("g")
-          .attr("class", "bycountryarc");
-          arc
-          .append("path")
-            .attr("d", <any>path_country)
-            .attr("fill", function(d:any) { 
-              console.log(d);
-              return color_scale_country(""+country_number(d.data.country)); })
+        //   var label = d3.arc()
+        //   .outerRadius(winwidth/10.5)
+        //   .innerRadius(winwidth/10.5);
+        //   var arc = second_country_g.selectAll(".bycountryarc")
+        //   .data(pie(data))
+        //   .enter()
+        //   .append("g")
+        //   .attr("class", "bycountryarc");
+        //   arc
+        //   .append("path")
+        //     .attr("d", <any>path_country)
+        //     .attr("fill", function(d:any) { 
+        //       console.log(d);
+        //       return color_scale_country(""+country_number(d.data.country)); })
           
-          arc
-          .append("text")
-          .attr('class', 'second_pielabel')
-          .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
-          .attr("dy", "0.35em")
-          .text(function(d:any) { return d.data.country; });
-          arc
-          .append("text")
-          .attr('class', 'second_pielabel2')
-          .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
-          .attr("dy", "1.2em")
-          .text(function(d:any) { return (d.data.value/1886*100).toFixed(2)+"%"; });
-          second_country_g
-          .transition()
-          .delay(500)
-          .duration(2000)
-          .attr("transform", "translate(" + winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
-        })
+        //   arc
+        //   .append("text")
+        //   .attr('class', 'second_pielabel')
+        //   .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
+        //   .attr("dy", "0.35em")
+        //   .text(function(d:any) { return d.data.country; });
+        //   arc
+        //   .append("text")
+        //   .attr('class', 'second_pielabel2')
+        //   .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
+        //   .attr("dy", "1.2em")
+        //   .text(function(d:any) { return (d.data.value/1886*100).toFixed(2)+"%"; });
+        //   second_country_g
+        //   .transition()
+        //   .delay(500)
+        //   .duration(2000)
+        //   .attr("transform", "translate(" + winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
+        // })
+        d3.csv("src/assets/stacked_user.csv").then(function(dataset:any){
+          var stack = d3.stack().keys(["Low Earth", "Medium Earth", "Geosynchronous", "Elliptical"]);
+          var series = stack(dataset);
+          var xScale = d3.scaleBand()
+          .domain(<any>d3.range(<any>dataset.length))
+          .range([winwidth*0.75, winwidth*0.95])
+          .paddingInner(0.05)
+          var yScale = d3.scaleLinear()
+          .domain([0,    
+              d3.max(dataset, function(d) {
+                  return +d["Low Earth"] + +d["Medium Earth"] + +d["Geosynchronous"] + +d["Elliptical"];
+              })
+          ]).range([height/4, 0])
+        
+          var groups = svg.selectAll(".stack_g")
+              .data(series)
+              .enter()
+              .append("g")
+              .attr("class", "stack_g")
+              .style("fill", function(d, i) {
+                  return color_scale_country(""+i);
+              });
+      
+          // Add a rect for each data value
+          var rects = groups.selectAll("rect")
+              .data(function(d) { 
+                  return d; 
+              })
+              .enter()
+              .append("rect")
+              .attr("x", function(d, i) {
+                  return xScale(""+i);
+              })
+              .attr("y", function(d) {
+                  return height*0.75+ yScale(d[1]);
+              })
+              .attr("height", function(d) {
+                  return yScale(d[0]) - yScale(d[1]);
+              })
+              .attr("width", xScale.bandwidth());
+          svg.append('g')
+              .attr('class', 'x axis')
+              .attr("transform", "translate(0," + height + ")")
+              .call(d3.axisBottom(xScale))
+          // svg.selectAll(".tick text")
+          // .text(function(d,i){
+          //     return Math.round(+d3.select(this).text() * 5 / 30) +"s";
+          // })
+          .attr("font-size", 13)
+          svg.append('g')
+              .attr("class", "y axis")
+              .attr("transform", "translate(" + winwidth*0.75 + "," + height*0.75 + ")")
+              .call(d3.axisLeft(yScale))
+      
+      })
 
       })
 
@@ -819,7 +874,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_circles")
         .attr("cx", width+width)
         .attr("cy", function(d,i){
-          return i*50+50;
+          return i*label_padding+label_padding;
         })
         .attr("r", 5)
         .attr("fill", function(d,i){
@@ -832,7 +887,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_labels")
         .attr("x", width+width)
         .attr("y", function(d,i){
-          return i*50+50;
+          return i*label_padding+label_padding;
         })
         .attr("fill", function(d,i){
           return "black";
@@ -849,7 +904,7 @@ export class SecondComponent implements OnInit {
         .duration(1400)
         .attr("cx", width)
         .attr("cy", function(d,i){
-          return i*50+50;
+          return i*label_padding+label_padding;
         })
         .attr("r", 5)
         .attr("fill", function(d,i){
@@ -890,7 +945,7 @@ export class SecondComponent implements OnInit {
         .duration(1500)
         .attr("x", width+5)
         .attr("y", function(d,i){
-          return i*50+50;
+          return i*label_padding+label_padding;
         })
         .attr("fill", function(d,i){
           return color_scale_purpose(""+i);
@@ -927,62 +982,117 @@ export class SecondComponent implements OnInit {
             return color_scale_purpose(""+purpose_number(dd["Purpose"]))
           })
         })
-        d3.json("src/assets/second_bypurpose.json").then(function(data:any){
-          svg.select("#second_country_g")
-          .transition()
-          .delay(500)
-          .duration(2000)
-          .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
-          .remove();
-          svg.select("#second_user_g")
-          .transition()
-          .delay(500)
-          .duration(2000)
-          .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
-          .remove();
-          var second_purpose_g = svg.append("g")
-          .attr("id", "second_purpose_g")
-          .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")");
-          var pie = d3.pie<any>()
-          .sort(null)
-          .value(d=>d.value);
-          var path_purpose = d3.arc()
-          .outerRadius(winwidth/9)
-          .innerRadius(0);
+        // d3.json("src/assets/second_bypurpose.json").then(function(data:any){
+        //   svg.select("#second_country_g")
+        //   .transition()
+        //   .delay(500)
+        //   .duration(2000)
+        //   .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
+        //   .remove();
+        //   svg.select("#second_user_g")
+        //   .transition()
+        //   .delay(500)
+        //   .duration(2000)
+        //   .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
+        //   .remove();
+        //   var second_purpose_g = svg.append("g")
+        //   .attr("id", "second_purpose_g")
+        //   .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")");
+        //   var pie = d3.pie<any>()
+        //   .sort(null)
+        //   .value(d=>d.value);
+        //   var path_purpose = d3.arc()
+        //   .outerRadius(winwidth/9)
+        //   .innerRadius(0);
       
-          var label = d3.arc()
-          .outerRadius(winwidth/10.5)
-          .innerRadius(winwidth/10.5);
-          var arc = second_purpose_g.selectAll(".bypurposearc")
-          .data(pie(data))
-          .enter()
-          .append("g")
-          .attr("class", "bypurposearc");
-          arc
-          .append("path")
-            .attr("d", <any>path_purpose)
-            .attr("fill", function(d:any) { 
-              console.log(d);
-              return color_scale_purpose(""+purpose_number(d.data.purpose)); })
+        //   var label = d3.arc()
+        //   .outerRadius(winwidth/10.5)
+        //   .innerRadius(winwidth/10.5);
+        //   var arc = second_purpose_g.selectAll(".bypurposearc")
+        //   .data(pie(data))
+        //   .enter()
+        //   .append("g")
+        //   .attr("class", "bypurposearc");
+        //   arc
+        //   .append("path")
+        //     .attr("d", <any>path_purpose)
+        //     .attr("fill", function(d:any) { 
+        //       console.log(d);
+        //       return color_scale_purpose(""+purpose_number(d.data.purpose)); })
           
-          arc
-          .append("text")
-          .attr('class', 'second_pielabel')
-          .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
-          .attr("dy", "0.35em")
-          .text(function(d:any) { return d.data.purpose; });
-          arc
-          .append("text")
-          .attr('class', 'second_pielabel2')
-          .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
-          .attr("dy", "1.2em")
-          .text(function(d:any) { return (d.data.value/1886*100).toFixed(2)+"%"; });
-          second_purpose_g
-          .transition()
-          .delay(500)
-          .duration(2000)
-          .attr("transform", "translate(" + winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
-        })
+        //   arc
+        //   .append("text")
+        //   .attr('class', 'second_pielabel')
+        //   .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
+        //   .attr("dy", "0.35em")
+        //   .text(function(d:any) { return d.data.purpose; });
+        //   arc
+        //   .append("text")
+        //   .attr('class', 'second_pielabel2')
+        //   .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
+        //   .attr("dy", "1.2em")
+        //   .text(function(d:any) { return (d.data.value/1886*100).toFixed(2)+"%"; });
+        //   second_purpose_g
+        //   .transition()
+        //   .delay(500)
+        //   .duration(2000)
+        //   .attr("transform", "translate(" + winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
+        // })
+        d3.csv("src/assets/stacked_purpose.csv").then(function(dataset:any){
+          var stack = d3.stack().keys(["Low Earth", "Medium Earth", "Geosynchronous", "Elliptical"]);
+          var series = stack(dataset);
+          var xScale = d3.scaleBand()
+          .domain(<any>d3.range(<any>dataset.length))
+          .range([winwidth*0.75, winwidth*0.95])
+          .paddingInner(0.05)
+          var yScale = d3.scaleLinear()
+          .domain([0,    
+              d3.max(dataset, function(d) {
+                  return +d["Low Earth"] + +d["Medium Earth"] + +d["Geosynchronous"] + +d["Elliptical"];
+              })
+          ]).range([height/4, 0])
+        
+          var groups = svg.selectAll(".stack_g")
+              .data(series)
+              .enter()
+              .append("g")
+              .attr("class", "stack_g")
+              .style("fill", function(d, i) {
+                  return color_scale_country(""+i);
+              });
+      
+          // Add a rect for each data value
+          var rects = groups.selectAll("rect")
+              .data(function(d) { 
+                  return d; 
+              })
+              .enter()
+              .append("rect")
+              .attr("x", function(d, i) {
+                  return xScale(""+i);
+              })
+              .attr("y", function(d) {
+                  return height*0.75+ yScale(d[1]);
+              })
+              .attr("height", function(d) {
+                  return yScale(d[0]) - yScale(d[1]);
+              })
+              .attr("width", xScale.bandwidth());
+          svg.append('g')
+              .attr('class', 'x axis')
+              .attr("transform", "translate(0," + height + ")")
+              .call(d3.axisBottom(xScale))
+          // svg.selectAll(".tick text")
+          // .text(function(d,i){
+          //     return Math.round(+d3.select(this).text() * 5 / 30) +"s";
+          // })
+          .attr("font-size", 13)
+          svg.append('g')
+              .attr("class", "y axis")
+              .attr("transform", "translate(" + winwidth*0.75 + "," + height*0.75 + ")")
+              .call(d3.axisLeft(yScale))
+      
+      })
 
 
       })
@@ -1007,7 +1117,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_circles")
         .attr("cx", width+width)
         .attr("cy", function(d,i){
-          return i*50+50;
+          return i*label_padding+label_padding;
         })
         .attr("r", 5)
         .attr("fill", function(d,i){
@@ -1020,7 +1130,7 @@ export class SecondComponent implements OnInit {
         .attr("class", "legend_labels")
         .attr("x", width+width)
         .attr("y", function(d,i){
-          return i*50+50;
+          return i*label_padding+label_padding;
         })
         .attr("fill", function(d,i){
           return color_scale_user(""+i);
@@ -1121,63 +1231,118 @@ export class SecondComponent implements OnInit {
           })
         })
 
-        d3.json("src/assets/second_byuser.json").then(function(data:any){
-          svg.select("#second_country_g")
-          .transition()
-          .delay(500)
-          .duration(2000)
-          .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
-          .remove();
-          svg.select("#second_purpose_g")
-          .transition()
-          .delay(500)
-          .duration(2000)
-          .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
-          .remove();
-          var second_user_g = svg.append("g")
-          .attr("id", "second_user_g")
-          .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")");
-          var pie = d3.pie<any>()
-          .sort(null)
-          .value(d=>d.value);
-          var path_user = d3.arc()
-          .outerRadius(winwidth/9)
-          .innerRadius(0);
+        // d3.json("src/assets/second_byuser.json").then(function(data:any){
+        //   svg.select("#second_country_g")
+        //   .transition()
+        //   .delay(500)
+        //   .duration(2000)
+        //   .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
+        //   .remove();
+        //   svg.select("#second_purpose_g")
+        //   .transition()
+        //   .delay(500)
+        //   .duration(2000)
+        //   .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
+        //   .remove();
+        //   var second_user_g = svg.append("g")
+        //   .attr("id", "second_user_g")
+        //   .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")");
+        //   var pie = d3.pie<any>()
+        //   .sort(null)
+        //   .value(d=>d.value);
+        //   var path_user = d3.arc()
+        //   .outerRadius(winwidth/9)
+        //   .innerRadius(0);
       
-          var label = d3.arc()
-          .outerRadius(winwidth/10.5)
-          .innerRadius(winwidth/10.5);
-          var arc = second_user_g.selectAll(".byuserarc")
-          .data(pie(data))
-          .enter()
-          .append("g")
-          .attr("class", "byuserarc");
-          arc
-          .append("path")
-            .attr("d", <any>path_user)
-            .attr("fill", function(d:any) { 
-              console.log(d);
-              return color_scale_user(""+user_number(d.data.user)); })
+        //   var label = d3.arc()
+        //   .outerRadius(winwidth/10.5)
+        //   .innerRadius(winwidth/10.5);
+        //   var arc = second_user_g.selectAll(".byuserarc")
+        //   .data(pie(data))
+        //   .enter()
+        //   .append("g")
+        //   .attr("class", "byuserarc");
+        //   arc
+        //   .append("path")
+        //     .attr("d", <any>path_user)
+        //     .attr("fill", function(d:any) { 
+        //       console.log(d);
+        //       return color_scale_user(""+user_number(d.data.user)); })
           
-          arc
-          .append("text")
-          .attr('class', 'second_pielabel')
-          .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
-          .attr("dy", "0.35em")
-          .text(function(d:any) { return d.data.user; });
-          arc
-          .append("text")
-          .attr('class', 'second_pielabel2')
-          .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
-          .attr("dy", "1.2em")
-          .text(function(d:any) { return (d.data.value/1886*100).toFixed(2)+"%"; });
-          second_user_g
-          .transition()
-          .delay(500)
-          .duration(2000)
-          .attr("transform", "translate(" + winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
-        })
+        //   arc
+        //   .append("text")
+        //   .attr('class', 'second_pielabel')
+        //   .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
+        //   .attr("dy", "0.35em")
+        //   .text(function(d:any) { return d.data.user; });
+        //   arc
+        //   .append("text")
+        //   .attr('class', 'second_pielabel2')
+        //   .attr("transform", function(d) { return "translate(" + label.centroid(<any>d) + ")"; })
+        //   .attr("dy", "1.2em")
+        //   .text(function(d:any) { return (d.data.value/1886*100).toFixed(2)+"%"; });
+        //   second_user_g
+        //   .transition()
+        //   .delay(500)
+        //   .duration(2000)
+        //   .attr("transform", "translate(" + winwidth / 8 * 7.1 + "," + winwidth / 16 * 6 + ")")
+        // })
 
+        d3.csv("src/assets/stacked_user.csv").then(function(dataset:any){
+          var stack = d3.stack().keys(["Low Earth", "Medium Earth", "Geosynchronous", "Elliptical"]);
+          var series = stack(dataset);
+          var xScale = d3.scaleBand()
+          .domain(<any>d3.range(<any>dataset.length))
+          .range([winwidth*0.75, winwidth*0.95])
+          .paddingInner(0.05)
+          var yScale = d3.scaleLinear()
+          .domain([0,    
+              d3.max(dataset, function(d) {
+                  return +d["Low Earth"] + +d["Medium Earth"] + +d["Geosynchronous"] + +d["Elliptical"];
+              })
+          ]).range([height/4, 0])
+        
+          var groups = svg.selectAll(".stack_g")
+              .data(series)
+              .enter()
+              .append("g")
+              .attr("class", "stack_g")
+              .style("fill", function(d, i) {
+                  return color_scale_country(""+i);
+              });
+      
+          // Add a rect for each data value
+          var rects = groups.selectAll("rect")
+              .data(function(d) { 
+                  return d; 
+              })
+              .enter()
+              .append("rect")
+              .attr("x", function(d, i) {
+                  return xScale(""+i);
+              })
+              .attr("y", function(d) {
+                  return height*0.75+ yScale(d[1]);
+              })
+              .attr("height", function(d) {
+                  return yScale(d[0]) - yScale(d[1]);
+              })
+              .attr("width", xScale.bandwidth());
+          svg.append('g')
+              .attr('class', 'x axis')
+              .attr("transform", "translate(0," + height + ")")
+              .call(d3.axisBottom(xScale))
+          // svg.selectAll(".tick text")
+          // .text(function(d,i){
+          //     return Math.round(+d3.select(this).text() * 5 / 30) +"s";
+          // })
+          .attr("font-size", 13)
+          svg.append('g')
+              .attr("class", "y axis")
+              .attr("transform", "translate(" + winwidth*0.75 + "," + height*0.75 + ")")
+              .call(d3.axisLeft(yScale))
+      
+      })
       })
 
       d3.select("#donut")
