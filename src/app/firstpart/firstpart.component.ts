@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
+import { color } from 'd3';
 
 export interface valueofone { date: string; value: number }
 export interface trade { country: string; trade_2017: number; latitude: number, longtitude: number }
@@ -33,9 +34,8 @@ export class FirstpartComponent implements OnInit {
     var temp_country_countryArray
     var temp_site_data
     d3.selectAll('input').property('checked', true);
-
-    var status = 0;
     d3.selectAll(".first").remove()
+    var status = 0;
     var svg = d3.select("#worldmap")
       .append("svg")
       .attr("class", "first")
@@ -44,9 +44,75 @@ export class FirstpartComponent implements OnInit {
       width = +svg.attr("width"),
       height = +svg.attr("height");
 
+    function draw_rect_label() {
+      var legend = d3.select(".first")
+        .append("g")
+        .attr("class", "num_country_legend")
+        .attr("width", 140)
+        .attr("height", 200)
+        .selectAll("g")
+        .data([10, 30, 50, 70, 90, 110])
+        .enter()
+        .append("g")
+        .attr("transform", function (d, i) { return "translate(" + (width / 10) + "," + (height / 2 + i * 25) + ")"; });
+
+      legend.append("rect")
+        .data([d3.rgb(8, 53, 114), d3.rgb(65, 143, 197), d3.rgb(101, 169, 211), d3.rgb(142, 193, 222), d3.rgb(191, 216, 236), d3.rgb(219, 233, 246)])
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", function (d: any) {
+          return d
+        });
+
+      legend.append("text")
+        .data(['200 or above', '101 to 200', '51 to 100', '21 to 50', '6 to 20', 'Under 5'])
+        .attr("x", 24)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .text(function (d) { return d; });
+
+    }
+
+    function draw_circle_label() {
+      // svg.selectAll('.num_site_legend').remove()
+      var legend = d3.select(".first")
+        .append("g")
+        .attr("class", "num_site_legend")
+        .attr("width", 140)
+        .attr("height", 200)
+        .selectAll("g")
+        .data([10, 30, 50, 70, 90, 110])
+        .enter()
+        .append("g")
+        .attr("transform", function (d, i) { return "translate(" + (width * 8 / 10) + "," + (height / 2 + i * 30) + ")"; });
+
+      legend.append("circle")
+        .data([d3.rgb(8, 53, 114), d3.rgb(65, 143, 197), d3.rgb(101, 169, 211), d3.rgb(142, 193, 222), d3.rgb(191, 216, 236), d3.rgb(219, 233, 246)])
+        .attr("r", 18)
+        .style("fill", 'red');
+
+      legend.append("text")
+        .data(['200 or above', '101 to 200', '51 to 100', '21 to 50', '6 to 20', 'Under 5'])
+        .attr("x", 24)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .text(function (d) { return d; });
+
+    }
+
+
+
     function adapt_site_data(x) {
       if (x > 0) {
-        return Math.pow(Math.log(x * 100),1.5)
+        return (Math.log(Math.pow(x, 4) * 100))
+      } else {
+        return x
+      }
+    }
+
+    function adapt_country_data(x) {
+      if (x > 0) {
+        return Math.pow(Math.log(x * 100), 3)
       } else {
         return x
       }
@@ -54,8 +120,11 @@ export class FirstpartComponent implements OnInit {
 
     var gg = svg.append("g")
     var path
-    var colorScale = d3.scaleSequential(d3.interpolateBlues).domain([0, 100]);
+    var colorScale = d3.scaleSequential(d3.interpolateBlues).domain([0, 1500]);
     d3.json("src/assets/world_geojson.json").then(function (json: any) {
+      svg.selectAll('.num_site_legend').remove()
+      d3.selectAll(".num_country_legend").remove()
+      d3.selectAll("#slider").remove()
       var projection = d3.geoMercator().fitSize([width, height * 1.4], json);
       path = d3.geoPath().projection(projection);
 
@@ -156,7 +225,7 @@ export class FirstpartComponent implements OnInit {
             if (index >= 0) {
               // console.log(d["properties"]["NAME"] + " " + jsonValueArray[index]+" , "+index);
               // console.log(d["properties"]["NAME"]+":color: "+colorScale(jsonValueArray[index]))
-              return (colorScale(valueArray[index]));
+              return (colorScale(adapt_country_data(valueArray[index])));
             } else {
               return "white";
             }
@@ -165,13 +234,25 @@ export class FirstpartComponent implements OnInit {
           .attr("d", path)
           .on("mouseover", function (d: any, i) {
             d3.select(this).attr("stroke-width", 2);
-            return tooltip_first.style("hidden", false).html("<p>Country: " + d["properties"]["NAME"] + '</p><p>' + 'Num of Launch:' + temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])] + "</p>");
+            var num_of_owned
+            if (typeof temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])] != "undefined") {
+              num_of_owned = temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])]
+            } else {
+              num_of_owned = 0
+            }
+            return tooltip_first.style("hidden", false).html("<p>Country: " + d["properties"]["NAME"] + '</p><p>' + 'Num of Owned:' + num_of_owned + "</p>");
           })
           .on("mousemove", function (d: any) {
+            var num_of_owned
+            if (typeof temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])] != "undefined") {
+              num_of_owned = temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])]
+            } else {
+              num_of_owned = 0
+            }
             tooltip_first.classed("hidden", false)
               .style("top", (d3.event.pageY) + "px")
               .style("left", (d3.event.pageX + 10) + "px")
-              .html("<p>Country: " + d["properties"]["NAME"] + '</p><p>' + 'Num of Launch:' + temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])] + "</p>");
+              .html("<p>Country: " + d["properties"]["NAME"] + '</p><p>' + 'Num of Owned:' + num_of_owned + "</p>");
           })
           .on("mouseout", function (d: any, i) {
             d3.select(this).attr("stroke-width", 1);
@@ -179,8 +260,9 @@ export class FirstpartComponent implements OnInit {
           });
       });
 
+      draw_circle_label()
+      draw_rect_label()
       slide_for_total_num()
-
 
 
       function slide_for_total_num() {
@@ -211,8 +293,9 @@ export class FirstpartComponent implements OnInit {
             x: width / 2,
             y: height / 2
           });
-        var possible_year_list:any = [1974, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018];
+        var possible_year_list: any = [1974, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018];
 
+        var tick_range: any = d3.range(1974, 2019)
         var line = svg_slider.append("line")
           .attr("x1", x1)
           .attr("x2", x2)
@@ -222,12 +305,12 @@ export class FirstpartComponent implements OnInit {
           .style("stroke-linecap", "round")
           .style("stroke-width", 5);
 
-        var xaxisx = d3.scaleBand().range([x1, x2]).domain(possible_year_list).paddingInner(0.99);
+        var xaxisx = d3.scaleBand().range([x1, x2]).domain(tick_range).paddingInner(0.99);
 
         d3.select("#slider")
           .append("g")
           .attr("class", "axis axis--x")
-          .attr("transform", "translate(0,"+100+")")
+          .attr("transform", "translate(0," + 100 + ")")
           .call(d3.axisBottom(xaxisx));
 
         // var xAxis = d3.axisBottom().scale(x);
@@ -299,7 +382,7 @@ export class FirstpartComponent implements OnInit {
                       if (valueArray[index] == 0) {
                         return "white"
                       } else {
-                        return (colorScale(valueArray[index]));
+                        return (colorScale(adapt_country_data(valueArray[index])));
                       }
                     } else {
                       return "white";
@@ -338,9 +421,8 @@ export class FirstpartComponent implements OnInit {
                   })
                 });
                 temp_site_data = site_data
-                svg.selectAll("circle")
+                svg.selectAll(".site_circle")
                   .data(site_data)
-                  .attr("class", "site_circle")
                   .attr("cx", function (d: any, i) {
                     return projection(d[2])[0]
                   }
@@ -374,6 +456,7 @@ export class FirstpartComponent implements OnInit {
           // var timecosume = date_now.getTime() - origin_time;
           // console.log("update use " + timecosume + " ms")
         }
+
       }
 
       //deal with checkbox
@@ -416,8 +499,10 @@ export class FirstpartComponent implements OnInit {
             .on("mouseout", function (d: any, i) {
               tooltip_first.classed("hidden", true);
             })
+          draw_circle_label()
         } else {
           console.log("by_launch_site: false")
+          svg.selectAll('.num_site_legend').remove()
           show_launch_site = false;
           svg.selectAll(".site_circle").remove()
         }
@@ -426,6 +511,7 @@ export class FirstpartComponent implements OnInit {
       function update_by_country() {
         if (d3.select("#by_country").property("checked")) {
           console.log("show_country_lauch: true")
+          draw_rect_label()
           show_country_lauch = true;
           gg.selectAll(".states")
             .data(temp_country_jsonfeatures)
@@ -439,7 +525,7 @@ export class FirstpartComponent implements OnInit {
                 if (temp_country_valuearray[index] == 0) {
                   return "white"
                 } else {
-                  return (colorScale(temp_country_valuearray[index]));
+                  return (colorScale(adapt_country_data(temp_country_valuearray[index])));
                 }
               } else {
                 return "white";
@@ -449,13 +535,25 @@ export class FirstpartComponent implements OnInit {
             .attr("d", path)
             .on("mouseover", function (d: any, i) {
               d3.select(this).attr("stroke-width", 2);
-              return tooltip_first.style("hidden", false).html("<p>Country: " + d["properties"]["NAME"] + '</p><p>' + 'Num of Launch:' + temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])] + "</p>");
+              var num_of_owned
+              if (typeof temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])] != "undefined") {
+                num_of_owned = temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])]
+              } else {
+                num_of_owned = 0
+              }
+              return tooltip_first.style("hidden", false).html("<p>Country: " + d["properties"]["NAME"] + '</p><p>' + 'Num of Owned:' + num_of_owned + "</p>");
             })
             .on("mousemove", function (d: any) {
+              var num_of_owned
+              if (typeof temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])] != "undefined") {
+                num_of_owned = temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])]
+              } else {
+                num_of_owned = 0
+              }
               tooltip_first.classed("hidden", false)
                 .style("top", (d3.event.pageY) + "px")
                 .style("left", (d3.event.pageX + 10) + "px")
-                .html("<p>Country: " + d["properties"]["NAME"] + '</p><p>' + 'Num of Launch:' + temp_country_valuearray[temp_country_countryArray.indexOf(d["properties"]["NAME"])] + "</p>");
+                .html("<p>Country: " + d["properties"]["NAME"] + '</p><p>' + 'Num of Owned:' + num_of_owned + "</p>");
             })
             .on("mouseout", function (d: any, i) {
               d3.select(this).attr("stroke-width", 1);
@@ -464,6 +562,7 @@ export class FirstpartComponent implements OnInit {
 
         } else {
           console.log("show_country_lauch: false")
+          d3.selectAll(".num_country_legend").remove()
           gg.selectAll(".states").remove()
           // gg.selectAll(".states")
           //   .attr("fill", "white")
