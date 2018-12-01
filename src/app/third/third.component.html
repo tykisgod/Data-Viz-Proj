@@ -12,23 +12,21 @@
 <div id="mainTooltip" class="hidden">
 	<span id="value"></span>
 </div>
-<div>
+<div>  
+        <button type="button" class="btn btn-warning" id="allOrbit">All Satellite</button>
         <button type="button" class="btn btn-secondary" id="lowOrbit">Low Orbit Satellite</button>
         <button type="button" class="btn btn-success" id="midOrbit">Medium Orbit Satellite </button>
         <button type="button" class="btn btn-danger" id="geoOrbit">Geo Orbit Satellite</button>
-        <button type="button" class="btn btn-warning" id="allOrbit">All Satellite</button>
+        
 </div>
-<div class="row" id="pie_chart">
-    <svg id ="chart-svg1"></svg> 
-    <div class = "card bg-dark text-white" style ="height:15rem;width:25rem">
+<div class = "card bg-dark text-white">
         <div class="card-body ">
-            <p>The pie chart showing  how many satellites these 5 countries own.</p>
-            <br>
-            <p>The detail will be displayed when you touch each piece.</p>
+            <p>Satellite Number : 1886</p>
+            <!--<p>The detail will be displayed when you touch each piece.</p>-->
         </div>
-    </div>
-    
-    
+</div>
+<div id="pie_chart">
+    <svg id ="chart-svg1"></svg> 
 </div>
 
 <div #chart2 id="line_chart" (window:resize)="onResize()"></div>
@@ -38,7 +36,7 @@
 </div>
 
 
-
+<p></p>>
 <div #chart3 id="line_chart_1" (window:resize)="onResize()">
 
 </div>

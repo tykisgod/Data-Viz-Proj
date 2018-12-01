@@ -22,8 +22,8 @@ export class ThirdComponent implements OnInit {
 
   onResize(){
     this.draw3();
-    //this.piechart();
-
+    this.piechart();
+    this.barchart();
   }
 
   private draw():void{
@@ -492,9 +492,10 @@ export class ThirdComponent implements OnInit {
     
     var divNode:any = d3.select("body").node();
     var flag = -1;
-    var margin = {top:40,right:100,bottom:60,left:60};
-    var winheight = window.innerHeight * 0.8;
+    var winheight = window.innerHeight*0.8;
     var winwidth = window.innerWidth*0.8;
+    var margin = {top:winheight*0.1,right:winwidth*0.1,bottom:winheight*0.1,left:winwidth*0.1};
+    
     d3.select("#linechart_2")
     //.style('background-color', 'lightgrey')
     .remove();   ////////  for resize
@@ -508,10 +509,12 @@ export class ThirdComponent implements OnInit {
 
     d3.select("#linechart_2")
     .append("text")
-    .attr("x",winwidth/2)
+    .attr("x",winwidth/2.1)
     .attr("y",0.05*winheight)
     .text("line chart for trend of launching satellite between 1966 and 2018")
     .attr("text-anchor", "middle")
+    .attr("font-size", winheight*0.02+"px")
+    .style("font-weight","bold")
 
     var width = parseInt(d3.select("#linechart_2").style("width")) - margin.left - margin.right;
     var height = parseInt(d3.select("#linechart_2").style("height")) - margin.top - margin.bottom;
@@ -638,16 +641,17 @@ export class ThirdComponent implements OnInit {
     
             counLine.append('circle')
               .attr('class','cirlegend')
-              .attr('cx', width-50)
+              .attr('cx', 0.8*winwidth)
               // .attr('cy',100)
               .attr('cy', function (d, i) { return (i+1) * height* 0.03; })
-              .attr('r' ,'5')
+              .attr('r' ,winheight*0.010)
               .attr('fill', function(d:any) { return color(d.name); })
       
             counLine.append('text') 
               .attr('class','llegend')
-              .attr("style","font-size:15px")
-              .attr('x', width-30)
+              .attr("font-size", winheight*0.015+"px")
+              //.attr("style",winheight*0.01+"px")
+              .attr('x', 0.81*winwidth)
               .attr('y', function (d, i) { return (i+1) * height* 0.03;})
               .text(function(d:any) { return d.name})
               .attr('text-anchor','start')
@@ -1040,9 +1044,14 @@ export class ThirdComponent implements OnInit {
 
   private piechart():void{
 
-    var winheight = window.innerHeight*0.6;
-    var winwidth = window.innerWidth*0.6;
-    var svg = d3.select("#chart-svg1")
+    var winheight = window.innerHeight*0.7;
+    var winwidth = window.innerWidth*0.7;
+
+    d3.select("#chart-svg1").remove();
+
+    var svg = d3.select("#pie_chart")
+    .append("svg")
+    .attr("id","chart-svg1")
     //.style('background-color', 'lightgrey')
     .attr('height',winheight)
     .attr('width',winwidth)
@@ -1061,13 +1070,13 @@ export class ThirdComponent implements OnInit {
     
     filter.append("feGaussianBlur")
             .attr("in","SourceAlpha")
-            .attr("stdDeviation", 3)
+            .attr("stdDeviation", winheight*0.001) //  3
             .attr("result", "blur");
     
     filter.append("feOffset")
         .attr("in", "blur")
-        .attr("dx", 3)
-        .attr("dy", 3)
+        .attr("dx", winheight*0.001)
+        .attr("dy", winheight*0.001)
         .attr("result", "offsetBlur");
         var feMerge = filter.append("feMerge");
     
@@ -1084,11 +1093,11 @@ export class ThirdComponent implements OnInit {
         .value(function(d) { return d['value']; });
   
     var path = d3.arc()
-        .outerRadius(radius - 10)
+        .outerRadius(radius*0.9)  //  -10
         .innerRadius(0); //make != 0 for a donut chart
     var label = d3.arc()
-      .outerRadius(radius - 70)
-      .innerRadius(radius - 70);
+      .outerRadius(radius*0.5)   //  -70
+      .innerRadius(radius*0.5);   // -70
    // d3.select('#pie_chart').append('svg')
     //.attr('id','title')
     //.append("text")
@@ -1109,23 +1118,23 @@ export class ThirdComponent implements OnInit {
 
     d3.select("#lowOrbit").on("click", function(){
       var src_low = "src/assets/Loworbit.csv";
-      drawPie2(src_low,"low orbit",1086)
+      drawPie2(src_low,"low orbit",1086,"Low orbit Satellite:     Altitude:187-1498 km  ;   Purpose: Observation ")
 
     })
 
     d3.select("#midOrbit").on("click",function(){
       var src_mid = "src/assets/Midorbit.csv";
-      drawPie2(src_mid,"medium orbit",117)
+      drawPie2(src_mid,"medium orbit",117,"Medium orbit Satellite:     Altitude:7815-23551 km  ;   Purpose: Navigation ")
     })
 
     d3.select("#geoOrbit").on("click",function(){
       var src_geo = "src/assets/Geoorbit.csv";
-      drawPie2(src_geo,"geo orbit",548)
+      drawPie2(src_geo,"geo orbit",548,"Geo orbit Satellite:     Altitude:32618-37782 km  ;   Purpose: Communication ")
     })
 
     d3.select("#allOrbit").on("click",function(){
       var src_geo = "src/assets/Allorbit.csv";
-      drawPie2(src_geo,"",1886)
+      drawPie2(src_geo,"",1886,"Satellite Number : 1886")
     })
     
     
@@ -1174,14 +1183,14 @@ export class ThirdComponent implements OnInit {
 
           var mousePos = d3.mouse(divNode);
           d3.select("#mainTooltip")
-            .style("left", mousePos[0] - 40 + "px")
-            .style("top", mousePos[1] - 70 + "px")
+            .style("left", mousePos[0] - winwidth*0.05 + "px")
+            .style("top", mousePos[1] - winheight*0.25 + "px")
             .select("#value")
             .attr("text-anchor", "middle")
             .html(d.data['Country'] + " own " + d.data['value']+" satellites <br>"+Math.round(d.data['value']*100/1886.0)+"% of world ");
-          d3.select(".card-body").selectAll("p").remove()
-          d3.select(".card-body").append("p").text("The pie chart showing  how many satellites these 5 countries percent own.")
-          d3.select(".card-body").append("p").text(d.data['Country']+ " has "+Math.round(d.data['value']*100/1886.0) + "% satellites in world!")
+         // d3.select(".card-body").selectAll("p").remove()
+         // d3.select(".card-body").append("p").text("The pie chart showing  how many satellites these 5 countries percent own.")
+         // d3.select(".card-body").append("p").text(d.data['Country']+ " has "+Math.round(d.data['value']*100/1886.0) + "% satellites in world!")
           d3.select("#mainTooltip").classed("hidden", false);
       })
     .on("mouseout", function(d){
@@ -1192,9 +1201,9 @@ export class ThirdComponent implements OnInit {
          // .transition()
          // .duration(500)
           .attr('transform','translate(0,0)');
-        d3.select(".card-body").selectAll("p").remove()
-        d3.select(".card-body").append("p").text("The pie chart showing  how many satellites these 5 countries percent own.")
-        d3.select(".card-body").append("p").text("Pieces show the country and its percent of satellites and detail will show when you point on.")
+       // d3.select(".card-body").selectAll("p").remove()
+       // d3.select(".card-body").append("p").text("The pie chart showing  how many satellites these 5 countries percent own.")
+       // d3.select(".card-body").append("p").text("Pieces show the country and its percent of satellites and detail will show when you point on.")
         d3.select("#mainTooltip").classed("hidden", true);
     });
 
@@ -1205,15 +1214,16 @@ export class ThirdComponent implements OnInit {
       .style("text-anchor", "middle")
       .attr("fill", "white")
       .attr("font-family", "sans-serif")
-      .attr("font-size", "12px");
+      .attr("font-size", winwidth*0.015+"px");
 
     d3.select("#chart-svg1").append("text")
     .attr("id","pietitle")
-    .attr("x",winwidth/2)
+    .attr("x",winwidth/2.1)
     .attr("y",winheight*0.95)
     .text("pie chart: satellites of each country")
     .attr("fill", "black")
     .attr("text-anchor"," middle")
+    .attr("font-size", winwidth*0.02+"px");
 
         });
 
@@ -1221,12 +1231,14 @@ export class ThirdComponent implements OnInit {
     }
 
 
-    function drawPie2(src,which,number){
+    function drawPie2(src,which,number,descr){
       // var pie = d3.pie() //pie generator
       //   .sort(null)
       //   .value(function(d) { return d['value']; });
       var sentence = which
-
+      
+      d3.select(".card-body").selectAll("p").remove()
+      d3.select(".card-body").append("p").text(descr)
 
       d3.csv(src,function(d:any){
         d.value = +d.value;
@@ -1264,7 +1276,7 @@ export class ThirdComponent implements OnInit {
       .style("text-anchor", "middle")
       .attr("fill", "white")
       .attr("font-family", "sans-serif")
-      .attr("font-size", "12px");
+      .attr("font-size", winwidth*0.015+"px");
               
              arc.on("mousemove", function(d) {
                d3.select(this)
@@ -1284,14 +1296,14 @@ export class ThirdComponent implements OnInit {
  
            var mousePos = d3.mouse(divNode);
            d3.select("#mainTooltip")
-             .style("left", mousePos[0] - 40 + "px")
-             .style("top", mousePos[1] - 70 + "px")
+             .style("left", mousePos[0] - winwidth*0.05 + "px")
+             .style("top", mousePos[1] - winheight*0.25 + "px")
              .select("#value")
              .attr("text-anchor", "middle")
              .html(d.data['Country'] + " own " + d.data['value']+" "+sentence+" satellites <br>"+Math.round(d.data['value']*100/number)+"% of world ");
-           d3.select(".card-body").selectAll("p").remove()
-           d3.select(".card-body").append("p").text("The pie chart showing  how many satellites these 5 countries percent own.")
-           d3.select(".card-body").append("p").text(d.data['Country']+ " has "+Math.round(d.data['value']*100/number) +"% " + sentence +" satellites in world!")
+           //d3.select(".card-body").selectAll("p").remove()
+           //d3.select(".card-body").append("p").text("The pie chart showing  how many satellites these 5 countries percent own.")
+           //d3.select(".card-body").append("p").text(d.data['Country']+ " has "+Math.round(d.data['value']*100/number) +"% " + sentence +" satellites in world!")
            d3.select("#mainTooltip").classed("hidden", false);
        })
        .on("mouseout", function(d){
@@ -1302,9 +1314,9 @@ export class ThirdComponent implements OnInit {
           .transition()
           .duration(1500)
           .attr('transform','translate(0,0)');
-        d3.select(".card-body").selectAll("p").remove()
-        d3.select(".card-body").append("p").text("The pie chart showing  how many satellites these 5 countries own.")
-        d3.select(".card-body").append("p").text("The detail will be displayed when you touch each piece.")
+       // d3.select(".card-body").selectAll("p").remove()
+       // d3.select(".card-body").append("p").text("The pie chart showing  how many satellites these 5 countries own.")
+       // d3.select(".card-body").append("p").text("The detail will be displayed when you touch each piece.")
         d3.select("#mainTooltip").classed("hidden", true);
     });
 
@@ -1356,8 +1368,8 @@ export class ThirdComponent implements OnInit {
 
   private barchart():void{
 
-    var winheight = window.innerHeight*0.6;
-    var winwidth = window.innerWidth*0.6;
+    var winheight = window.innerHeight*0.9;
+    var winwidth = window.innerWidth*0.9;
     d3.select("#bar").remove();  
     var svg = d3.select("#dashboard")
    // .style('background-color', 'lightgrey')
@@ -1367,7 +1379,7 @@ export class ThirdComponent implements OnInit {
     .attr('width',winwidth)
     var divNode:any = d3.select("body").node();
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 40};
+    var margin = {top: winheight*0.1, right: winwidth*0.1, bottom: winheight*0.1, left: winwidth*0.1};
 
     var width = winwidth - margin.right - margin.left;
     var height = winheight - margin.top - margin.bottom;
@@ -1415,8 +1427,8 @@ export class ThirdComponent implements OnInit {
         .attr("fill","#d0743c")
         var mousePos = d3.mouse(divNode);
            d3.select("#mainTooltip")
-             .style("left", mousePos[0]+5 + "px")
-             .style("top", mousePos[1] - 10 + "px")
+             .style("left", mousePos[0]+winheight*0.005 + "px")
+             .style("top", mousePos[1] - winheight*0.01 + "px")
              .select("#value")
              .attr("text-anchor", "middle")
              .html(" usage :"+d.key+"<br>"+"number :"+d.value.toString())
@@ -1443,7 +1455,7 @@ export class ThirdComponent implements OnInit {
       .attr("class", "axis")
       .call(d3.axisLeft(y).ticks(null, "s"))
       .append("text")
-      .attr("x", 2)
+      .attr("x", winwidth*0.01)
       .attr("y", y(y.ticks().pop()) + 0.5)
       .attr("dy", "0.32em")
       .attr("fill", "#000")
@@ -1454,22 +1466,22 @@ export class ThirdComponent implements OnInit {
 
       var legend = g.append("g")
       .attr("font-family", "sans-serif")
-      .attr("font-size", 10)
+      .attr("font-size", winwidth*0.01)
       .attr("text-anchor", "end")
       .selectAll("g")
       .data(keys)   /////
       .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+      .attr("transform", function(d, i) { return "translate(0," + i * width*0.025 + ")"; });
 
       legend.append("rect")
-      .attr("x", width - 19)
-      .attr("width", 19)
-      .attr("height", 19)
+      .attr("x", width - width*0.024)
+      .attr("width", width*0.024)
+      .attr("height", width*0.024)
       .attr("fill", function(d){return color(d).toString()});  ////////
 
       legend.append("text")
-      .attr("x", width - 24)
-      .attr("y", 9.5)
+      .attr("x", width - width*0.029)
+      .attr("y", width*0.015)
       .attr("dy", "0.32em")
       .text(function(d) { return d; });
 
@@ -1477,7 +1489,8 @@ export class ThirdComponent implements OnInit {
       .attr("x",0.5*width)
       .attr("y",0.05*height)
       .text("Usage of Satellite for each country")
-      .attr("text-anchor","middle");
+      .attr("text-anchor","middle")
+      .attr("font-size", winwidth*0.015+"px");
 
     });
      
