@@ -1253,7 +1253,7 @@ export class ThirdComponent implements OnInit {
           console.log("here")
           
          
-          d3.select("#pietitle").text("pie chart: "+ which +" satellites of each country");
+          d3.select("#pietitle").text("pie chart: "+ sentence +" satellites of each country");
 
           arc
              .select("path") //for each slide use arc path generator to draw the pie
