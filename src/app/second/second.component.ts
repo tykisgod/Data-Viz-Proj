@@ -26,8 +26,7 @@ export class SecondComponent implements OnInit {
     var flag = 0;
     var orbit_flag = "geo";
     var winwidth = window.innerWidth;
-    var margin = {left:20, top:20, bottom:20, right:100}
-    var margin0 = {left:0, top:0, bottom:0, right:0}
+    var margin = {left:winwidth*0.02, top:winwidth*0.02, bottom:winwidth*0.02, right:winwidth*0.05}
     d3.select(".second").remove();
     var svg = d3.select("#orbits").append("svg") 
       .attr("class", "second")
@@ -42,19 +41,19 @@ export class SecondComponent implements OnInit {
     .attr("fill", "#4B4B4B")
     svg.append("text")
     .attr("x", width/2)
-    .attr("y", height+0.5*margin.bottom)
+    .attr("y", height+0.7*margin.bottom)
     .text("Satellite Dot Distribution Map")
     .attr("fill", "white")
-    .attr("font-size", 18)
+    .attr("font-size", winwidth * 0.02)
     .attr('alignment-baseline', 'center')
     .attr("text-anchor", "middle")
     svg.append("text")
     .attr("id", "stack_title")
     .attr("x", winwidth/8*6.5)
-    .attr("y", height+0.5*margin.bottom)
+    .attr("y", height+0.7*margin.bottom)
     .text("")
     .attr("fill", "white")
-    .attr("font-size", 16)
+    .attr("font-size", winwidth * 0.015)
     .attr('alignment-baseline', 'center')
     .attr("text-anchor", "middle")
     svg.append('g')
@@ -84,7 +83,7 @@ export class SecondComponent implements OnInit {
     .text(function(d,i){
         return +d-6400 + "KM";
     })
-    .attr("font-size", 13)
+    .attr("font-size", winwidth * 0.0125)
     .attr("text-anchor", "middle")
     .attr("fill", "white")
     svg.select(".altitude .domain")
@@ -92,59 +91,6 @@ export class SecondComponent implements OnInit {
     svg.selectAll(".altitude .tick line")
     .attr("stroke", "none")
 
-    var count_g = svg.append("g")
-    .attr("transform", "translate(" + (width / 2) + "," +0 + ")")
-
-    count_g.append("text")
-    .attr("id", "leo_count")
-    .attr("class", "orbit_count")
-    .attr("radius", earth_radius+1700)
-    .attr("x", function(){
-      return radius_scale_earth(+d3.select(this).attr("radius"))
-    })
-    .attr('alignment-baseline', 'hanging')
-    .text("←Number:1186")
-    .attr("font-size", 13)
-    .transition()
-    .delay(500)
-    .duration(2000)
-    .attr("x", function(){
-      return radius_scale_geo(+d3.select(this).attr("radius"))
-    })
-    count_g.append("text")
-    .attr("id", "meo_count")
-    .attr("class", "orbit_count")
-    .attr("radius", earth_radius+24000)
-    .attr("x", function(){
-      return radius_scale_earth(+d3.select(this).attr("radius"))
-    })
-    .attr('alignment-baseline', 'hanging')
-    .text("←Number:112")
-    .attr("font-size", 13)
-    .transition()
-    .delay(500)
-    .duration(2000)
-    .attr("x", function(){
-      return radius_scale_geo(+d3.select(this).attr("radius"))
-    })
-    count_g.append("text")
-    .attr("id", "geo_count")
-    .attr("class", "orbit_count")
-    .attr("radius", earth_radius+38000)
-    .attr("x", function(){
-      return radius_scale_earth(+d3.select(this).attr("radius"))
-    })
-    .attr('alignment-baseline', 'hanging')
-    .text("←Number:548")
-    .attr("font-size", 13)
-    .transition()
-    .delay(500)
-    .duration(2000)
-    .attr("x", function(){
-      return radius_scale_geo(+d3.select(this).attr("radius"))
-    })
-    count_g.selectAll(".orbit_count")
-    .attr("fill", "white")
 
     var color_scale_country = d3.scaleOrdinal(d3.schemeCategory10);
     var color_scale_purpose = d3.scaleOrdinal(d3.schemeCategory10);
@@ -272,7 +218,60 @@ export class SecondComponent implements OnInit {
     .delay(500)
     .duration(2000)
     .attr("r", radius_scale_geo(6400+35200))
+    var count_g = svg.append("g")
+    .attr("transform", "translate(" + (width / 2) + "," +0 + ")")
 
+    count_g.append("text")
+    .attr("id", "leo_count")
+    .attr("class", "orbit_count")
+    .attr("radius", earth_radius+1700)
+    .attr("x", function(){
+      return radius_scale_earth(+d3.select(this).attr("radius"))
+    })
+    .attr('alignment-baseline', 'hanging')
+    .text("←Number:1186")
+    .attr("font-size", winwidth * 0.0125)
+    .transition()
+    .delay(500)
+    .duration(2000)
+    .attr("x", function(){
+      return radius_scale_geo(+d3.select(this).attr("radius"))
+    })
+
+    count_g.append("text")
+    .attr("id", "meo_count")
+    .attr("class", "orbit_count")
+    .attr("radius", earth_radius+24000)
+    .attr("x", function(){
+      return radius_scale_earth(+d3.select(this).attr("radius"))
+    })
+    .attr('alignment-baseline', 'hanging')
+    .text("←Number:112")
+    .attr("font-size", winwidth * 0.0125)
+    .transition()
+    .delay(500)
+    .duration(2000)
+    .attr("x", function(){
+      return radius_scale_geo(+d3.select(this).attr("radius"))
+    })
+    count_g.append("text")
+    .attr("id", "geo_count")
+    .attr("class", "orbit_count")
+    .attr("radius", earth_radius+38000)
+    .attr("x", function(){
+      return radius_scale_earth(+d3.select(this).attr("radius"))
+    })
+    .attr('alignment-baseline', 'hanging')
+    .text("←Number:548")
+    .attr("font-size", winwidth * 0.0125)
+    .transition()
+    .delay(500)
+    .duration(2000)
+    .attr("x", function(){
+      return radius_scale_geo(+d3.select(this).attr("radius"))
+    })
+    count_g.selectAll(".orbit_count")
+    .attr("fill", "white")
 
 
     d3.csv("src/assets/full_data.csv").then(function(data){
@@ -282,7 +281,14 @@ export class SecondComponent implements OnInit {
       .append("circle")
       .attr("class","satellites")
       .attr("transform", "translate(" + (width / 2) + "," +0 + ")")
-      .attr("r", 3)
+      .attr("r", function(){
+        if (winwidth>720){
+          return 3;
+        }
+        else{
+          return 1.5;
+        }
+      })
       .attr("fill", "gold")
       .attr("saved_x", function(d:any){
         return (6400 + +d.Perigee) * Math.cos(Math.random()* Math.PI);
@@ -614,7 +620,14 @@ export class SecondComponent implements OnInit {
         .attr("cy", function(d,i){
           return i*label_padding+label_padding;
         })
-        .attr("r", 5)
+        .attr("r", function(){
+          if (winwidth > 700){
+            return 5;
+          }
+          else{
+            return 2.5;
+          }
+        })
         .attr("fill", function(d,i){
           return color_scale_country(""+i);
         })
@@ -631,7 +644,7 @@ export class SecondComponent implements OnInit {
           return color_scale_country(""+i);
         })
         .attr('alignment-baseline', 'middle')
-        .attr("font-size", 10)
+        .attr("font-size", winwidth * 0.0125)
         .text(function(d){
           return d;
         })
@@ -785,7 +798,7 @@ export class SecondComponent implements OnInit {
               return orbit_list[i];
           })
           .attr("fill", "white")
-          .attr("font-size", 10)
+          .attr("font-size", winwidth * 0.01)
           svg.select(".y.axis")
               .attr("transform", "translate(" + winwidth*0.95 + "," + (height*1/2 - margin.bottom) + ")")
               .call(d3.axisRight(yScale))
@@ -866,7 +879,7 @@ export class SecondComponent implements OnInit {
           return "black";
         })
         .attr('alignment-baseline', 'middle')
-        .attr("font-size", 10)
+        .attr("font-size", winwidth * 0.0125)
         .text(function(d){
           return "";
         })
@@ -921,7 +934,7 @@ export class SecondComponent implements OnInit {
           return color_scale_purpose(""+i);
         })
         .attr('alignment-baseline', 'middle')
-        .attr("font-size", 10)
+        .attr("font-size", winwidth * 0.0125)
         .text(function(d){
           return d;
         })
@@ -1012,7 +1025,7 @@ export class SecondComponent implements OnInit {
               return orbit_list[i];
           })
           .attr("fill", "white")
-          .attr("font-size", 10)
+          .attr("font-size", winwidth * 0.0125)
           svg.select(".y.axis")
               .attr("transform", "translate(" + winwidth*0.95 + "," + (height*0.5- margin.bottom) + ")")
               .call(d3.axisRight(yScale))
@@ -1095,7 +1108,7 @@ export class SecondComponent implements OnInit {
           return color_scale_user(""+i);
         })
         .attr('alignment-baseline', 'middle')
-        .attr("font-size", 10)
+        .attr("font-size", winwidth * 0.0125)
         .text(function(d){
           return d;
         })
@@ -1250,7 +1263,7 @@ export class SecondComponent implements OnInit {
               return orbit_list[i];
           })
           .attr("fill", "white")
-          .attr("font-size", 10)
+          .attr("font-size", winwidth * 0.0125)
           svg.select(".y.axis")
               .attr("transform", "translate(" + winwidth*0.95 + "," + (height*0.5 - margin.bottom)+ ")")
               .call(d3.axisRight(yScale))
@@ -1408,7 +1421,7 @@ export class SecondComponent implements OnInit {
         .text(function(d,i){
             return +d-6400 + "KM";
         })
-        .attr("font-size", 12)
+        .attr("font-size", winwidth * 0.0135)
         .attr("stroke", "white")
 
         svg.select(".altitude .domain")
