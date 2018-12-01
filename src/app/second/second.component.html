@@ -1,44 +1,41 @@
 <h2 align="center"> 
-  What's it like above the sky?
+  How are satellites distributed above the sky?
 </h2>
 
 <div class="container" align="center" >
   <div class="btn-group">
     <button type="button" class="btn btn-primary" id="reset">Reset</button>
-    <!-- <button type="button" class="btn btn-primary" id="show_low">Show Low Earth Orbit</button>
-    <button type="button" class="btn btn-primary" id="show_medium">Show Medium Earth Orbit</button>
-    <button type="button" class="btn btn-primary" id="show_g">Show Geosynchronous</button> -->
-    <button type="button" class="btn btn-primary dropdown-toggle" id="chooseorbit" data-toggle="dropdown">
+    <button type="button" class="btn btn-primary dropdown-toggle" id="chooseorbit" data-toggle="dropdown" data-toggle2="tooptip" title="Choose orbit that you want to look closely">
         Choose Orbit
     </button>
     <div class="dropdown-menu">
-        <a class="dropdown-item" id="show_low">Low Earth Orbit</a>
-        <a class="dropdown-item" id="show_medium">Medium Earth Orbit</a>
-        <a class="dropdown-item" id="show_g">Geosynchronous Orbit</a>
+        <button class="btn dropdown-item" id="show_low">Low Earth Orbit</button>
+        <button class="btn dropdown-item" id="show_medium">Medium Earth Orbit</button>
+        <button class="btn dropdown-item" id="show_g">Geosynchronous Orbit</button>
       </div>
-    <!-- <button type="button" class="btn btn-primary" id="second_by_country">Color By Owner Country</button>
-    <button type="button" class="btn btn-primary" id="second_by_purpose">Color By Purpose</button>
-    <button type="button" class="btn btn-primary" id="second_by_user">Color By User</button> -->
   </div>  
   <div class="btn-group">
-      <button type="button" class="btn btn-primary dropdown-toggle" id="colorby" data-toggle="dropdown">
+      <button type="button" class="btn btn-primary dropdown-toggle" id="colorby" data-toggle="dropdown" data-toggle2="tooptip" title="Color satellites by different categories">
           Color By
       </button>  
       <div class="dropdown-menu">
-          <a class="dropdown-item" id="second_by_country">By Owner</a>
-          <a class="dropdown-item" id="second_by_purpose">By Purpose</a>
-          <a class="dropdown-item" id="second_by_user">By User</a>
+          <button class="btn dropdown-item" id="second_by_country">By Owner</button>
+          <button class="btn dropdown-item" id="second_by_purpose">By Purpose</button>
+          <button class="btn dropdown-item" id="second_by_user">By User</button>
         </div>
-      <button type="button" class="btn btn-info disabled" id="donut">Donut Chart</button>
+      <button type="button" class="btn btn-info disabled" id="donut" data-toggle2="tooptip" title="See satellite number proportion of countries. Only works when color by country">Donut Chart</button>
 
   </div>
 </div>    
 <div id="tooltip" class="hidden">
-    <p><strong>Country: <span id="t_country">USA</span></strong></p>
-    <p>Operator: <span id="t_operator">USC</span></p>
-    <p>User: <span id="t_user">Civil</span>; Purpose: <span id="t_purpose">Communications</span></p>
-    <p>Class: <span id="t_class">LEO</span>; Perigee: <span id="t_perigee">1000</span> km, Apogee: <span id="t_apogee">1000</span> km</p>
-    <p>Data of Launch: <span id="t_date">1/1/2018</span></p>
-    <p>Launch Site: <span id="t_site">Vandenberg AFB</span>, Launch Vehicle: <span id="t_vehicle">Atlas 5</span></p>
+    <p><strong><span id="cate_key">Country: </span><span id="cate_value">USA</span></strong></p>
+    <p>Number: <span id="value_value">0</span></p>
+    <p>Ratio: <span id="ratio_value">0</span></p>
 </div> 
+<!-- <div class="card bg-info text-white" id="explanatory">test</div> -->
 <div id="orbits" (window:resize)="onResize()"></div>
+<script>
+$(document).ready(function(){
+    $('[data-toggle2="tooltip"]').tooltip(); 
+    });
+</script>

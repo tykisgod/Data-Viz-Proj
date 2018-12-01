@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
-import { tmpdir } from 'os';
 
 @Component({
   selector: 'app-third',
@@ -524,7 +523,7 @@ export class ThirdComponent implements OnInit {
     var xAxis = d3.axisBottom(xScale);
     var yAxis = d3.axisLeft(yScale);
 
-    // ÖÆ×÷ x ºÍ  y Öá
+    // ï¿½ï¿½ï¿½ï¿½ x ï¿½ï¿½  y ï¿½ï¿½
 
     var line = d3.line()
         .x(function(d:any){return xScale(d['Year']);}) 
@@ -565,7 +564,7 @@ export class ThirdComponent implements OnInit {
         var y_min = +d3.min(countries, function(c:any) { return d3.min(c['values'], function(v:any) { return +v['rate']; }); });//-10;
         var y_max = +d3.max(countries, function(c:any) { return d3.max(c['values'], function(v:any) { return +v['rate']; }); })+5;
         yScale.domain([y_min,y_max])
-        yAxis.ticks(5);  //// ticksµÄ×÷ÓÃ
+        yAxis.ticks(5);  //// ticksï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         xAxis.ticks(5);
   
         //console.log(xScale.domain);
