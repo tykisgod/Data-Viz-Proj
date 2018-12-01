@@ -577,7 +577,7 @@ export class ThirdComponent implements OnInit {
             .attr("transform", "rotate(-75)")
             .attr("dx", "-2em")
             .attr("dy", "-0.5em")
-            .attr("font-size", "15px")
+            .attr("font-size", winheight*0.02+"px")
 
           svg.append("g")
             .attr("class", "yAxis")
@@ -589,11 +589,11 @@ export class ThirdComponent implements OnInit {
             .attr("dy", ".7em")
             .attr("fill", "#000")
             .style("text-anchor", "end")
-            .attr("font-size", "15px")
+            .attr("font-size", winheight*0.02+"px")
             .text("number of Satellite per year");
 
           svg.selectAll(".yAxis .tick text")
-             .attr("font-size", "15px")
+             .attr("font-size", winheight*0.02+"px")
 
 
             var counLine = svg.selectAll(".counLine")
