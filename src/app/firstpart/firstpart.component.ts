@@ -84,19 +84,19 @@ export class FirstpartComponent implements OnInit {
         .data([0, -5, -5, 0, 5, 25])
         .enter()
         .append("g")
-        .attr("transform", function (d, i) { return "translate(" + (width * 8 / 10) + "," + (height / 2 + i * 50-d) + ")"; });
+        .attr("transform", function (d, i) { return "translate(" + (width * 8 / 10) + "," + (height / 2 + i * 50 - d) + ")"; });
 
       legend.append("circle")
         .data([25.8, 24, 20, 17, 13, 10])
         .attr("r", function (d) { return d })
-        .style("opacity","0.7")
+        .style("opacity", "0.7")
         .style("fill", 'red');
 
       legend.append("text")
         .data(['200 or above', '101 to 200', '51 to 100', '21 to 50', '6 to 20', 'Under 5'])
         .attr("x", 30)
         .attr("y", 9)
-        .attr('alignment-baseline','ideographic')
+        .attr('alignment-baseline', 'ideographic')
         .attr("dy", ".35em")
         .text(function (d) { return d; });
 
@@ -288,6 +288,7 @@ export class FirstpartComponent implements OnInit {
           .attr("width", width)
           .attr("height", 200)
           .append("g")
+          .attr("transform", "translate(0, -50)")
           // .attr("transform", "translate(0 -300)")
           // .attr("width", width)
           // .attr("height", 200)
@@ -309,12 +310,19 @@ export class FirstpartComponent implements OnInit {
 
         var xaxisx = d3.scaleBand().range([x1, x2]).domain(tick_range).paddingInner(0.99);
 
+
+
         d3.select("#slider")
           .append("g")
-          .attr("class", "axis axis--x")
-          .attr("transform", "translate(0," + 100 + ")")
+          .attr("class", "slideraxis")
+          .attr("transform", "translate(0," + 50 + ")")
           .call(d3.axisBottom(xaxisx));
 
+        d3.selectAll('g.slideraxis g.tick text')
+          .attr("transform", "rotate(-75)")
+          .attr("font-size","12")
+          .attr("dy", "-0.2em")
+          .attr("dx", "-2.5em")
         // var xAxis = d3.axisBottom().scale(x);
 
         // svg.append("g")
