@@ -330,6 +330,7 @@ export class SecondComponent implements OnInit {
         .delay(501)
         .duration(2000)
         .attr("text-anchor", "middle")
+        .attr("dy", winwidth*0.0005)
         .text(function(d,i){
             return +d-6400 + "KM";
         })
