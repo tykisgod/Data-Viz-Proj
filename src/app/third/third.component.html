@@ -1,31 +1,51 @@
 
 
-<p>
-    Some fun charts
-</p>
+
+<br>
+<br>
+<br>
+<br>
+
 <div id="charts"></div>
 
-<div class = "card bg-primary text-white">
-    <div class="card-body">
-        <p>The pie chart showing  how many satellites these 5 countries percent own.</p>
-        <p>Pieces show the country and its percent of satellites and detail will show when you point on.</p>
-    </div>
-</div>
+
 <div id="mainTooltip" class="hidden">
-	<p><span id="value"></span></p>
-</div>
-<div id="pie_chart"width = "1000" height="1000">
-    <svg id ="chart-svg1" width="1000" height="1000"></svg> 
+	<span id="value"></span>
 </div>
 <div>
-    <button type="button" class="btn btn-primary" id="1111">Trend of whole world</button>
-    <button type="button" class="btn btn-primary" id="22222">Trend of each country</button>
+        <button type="button" class="btn btn-secondary" id="lowOrbit">Low Orbit Satellite</button>
+        <button type="button" class="btn btn-success" id="midOrbit">Medium Orbit Satellite </button>
+        <button type="button" class="btn btn-danger" id="geoOrbit">Geo Orbit Satellite</button>
+        <button type="button" class="btn btn-warning" id="allOrbit">All Satellite</button>
 </div>
+<div class="row" id="pie_chart">
+    <svg id ="chart-svg1"></svg> 
+    <div class = "card bg-dark text-white" style ="height:15rem;width:25rem">
+        <div class="card-body ">
+            <p>The pie chart showing  how many satellites these 5 countries own.</p>
+            <br>
+            <p>The detail will be displayed when you touch each piece.</p>
+        </div>
+    </div>
+    
+    
+</div>
+
 <div #chart2 id="line_chart" (window:resize)="onResize()"></div>
 
-<div #chart3 id="line_chart_1" (window:resize)="onResize()"></div>
+<div id ="line_Tooltip" class ="hidden">
+        <p><span id ="value"></span></p>
+</div>
 
-<h2>Bar Chart</h2>
+
+
+<div #chart3 id="line_chart_1" (window:resize)="onResize()">
+
+</div>
+<br>
+<br>
+<br>
+<!-- <h2>Bar Chart</h2>
 
     <div id="p2">
         <div>
@@ -33,3 +53,10 @@
             <button type="button" class="btn btn-primary" id="third_reset">All dataSet</button>
         </div>
     </div>
+
+!-->
+<div id="dashboard" (window:resize)="onResize()">
+        
+    
+        
+</div>
