@@ -53,7 +53,7 @@ export class SecondComponent implements OnInit {
     .attr("y", height+0.7*margin.bottom)
     .text("")
     .attr("fill", "white")
-    .attr("font-size", winwidth * 0.015)
+    .attr("font-size", winwidth * 0.0135)
     .attr('alignment-baseline', 'center')
     .attr("text-anchor", "middle")
     svg.append('g')
@@ -83,7 +83,7 @@ export class SecondComponent implements OnInit {
     .text(function(d,i){
         return +d-6400 + "KM";
     })
-    .attr("font-size", winwidth * 0.0125)
+    .attr("font-size", winwidth * 0.0115)
     .attr("text-anchor", "middle")
     .attr("fill", "white")
     svg.select(".altitude .domain")
@@ -230,7 +230,7 @@ export class SecondComponent implements OnInit {
     })
     .attr('alignment-baseline', 'hanging')
     .text("←Number:1186")
-    .attr("font-size", winwidth * 0.0125)
+    .attr("font-size", winwidth * 0.0115)
     .transition()
     .delay(500)
     .duration(2000)
@@ -247,7 +247,7 @@ export class SecondComponent implements OnInit {
     })
     .attr('alignment-baseline', 'hanging')
     .text("←Number:112")
-    .attr("font-size", winwidth * 0.0125)
+    .attr("font-size", winwidth * 0.0115)
     .transition()
     .delay(500)
     .duration(2000)
@@ -263,7 +263,7 @@ export class SecondComponent implements OnInit {
     })
     .attr('alignment-baseline', 'hanging')
     .text("←Number:548")
-    .attr("font-size", winwidth * 0.0125)
+    .attr("font-size", winwidth * 0.0115)
     .transition()
     .delay(500)
     .duration(2000)
@@ -329,13 +329,12 @@ export class SecondComponent implements OnInit {
         .transition()
         .delay(501)
         .duration(2000)
-        .attr("text-anchor", "center")
-        .attr("x", "-1em")
+        .attr("text-anchor", "middle")
         .text(function(d,i){
             return +d-6400 + "KM";
         })
-        .attr("font-size", 12)
-        .attr("stroke", "white")
+        .attr("font-size", winwidth*0.0135)
+        .attr("fill", "white")
         .attr("dy", 10)
         svg.select(".altitude .domain")
         .attr("stroke", "none")
@@ -423,13 +422,12 @@ export class SecondComponent implements OnInit {
         .transition()
         .delay(501)
         .duration(2000)
-        .attr("x", "-1em")
-        .attr("text-anchor", "center")
+        .attr("text-anchor", "middle")
         .text(function(d,i){
             return +d-6400 + "KM";
         })
-        .attr("font-size", 12)
-        .attr("stroke", "white")
+        .attr("font-size", winwidth*0.0135)
+        .attr("fill", "white")
 
         svg.select(".altitude .domain")
         .attr("stroke", "none")
@@ -517,13 +515,12 @@ export class SecondComponent implements OnInit {
         .transition()
         .delay(501)
         .duration(2000)
-        .attr("x", "-1em")
-        .attr("text-anchor", "center")
+        .attr("text-anchor", "middle")
         .text(function(d,i){
             return +d-6400 + "KM";
         })
-        .attr("font-size", 12)
-        .attr("stroke", "white")
+        .attr("font-size", winwidth*0.0135)
+        .attr("fill", "white")
 
         svg.select(".altitude .domain")
         .attr("stroke", "none")
@@ -669,7 +666,7 @@ export class SecondComponent implements OnInit {
         .transition()
         .delay(300)
         .duration(1500)
-        .attr("cx", width)
+        .attr("cx", winwidth*0.9125)
         .attr("fill", function(d,i){
           return color_scale_country(""+i);
         })
@@ -678,11 +675,11 @@ export class SecondComponent implements OnInit {
         .transition()
         .delay(300)
         .duration(1500)
-        .attr("x", width+5)
+        .attr("x", winwidth*0.916)
         .attr("fill", function(d,i){
           return color_scale_country(""+i);
         })
-        .attr("font-size", 10)
+        .attr("font-size", winwidth * 0.0125)
         .text(function(d, i){
           return d;
         })
@@ -888,7 +885,7 @@ export class SecondComponent implements OnInit {
         .transition()
         .delay(300)
         .duration(1400)
-        .attr("cx", width)
+        .attr("cx", winwidth*0.9125)
         .attr("cy", function(d,i){
           return i*label_padding+label_padding;
         })
@@ -926,7 +923,7 @@ export class SecondComponent implements OnInit {
         .transition()
         .delay(300)
         .duration(1500)
-        .attr("x", width+5)
+        .attr("x", winwidth*0.916)
         .attr("y", function(d,i){
           return i*label_padding+label_padding;
         })
@@ -1133,7 +1130,7 @@ export class SecondComponent implements OnInit {
         .transition()
         .delay(300)
         .duration(1500)
-        .attr("cx", width)
+        .attr("cx", winwidth*0.9125)
         .attr("fill", function(d,i){
           return color_scale_user(""+i);
         })
@@ -1142,11 +1139,11 @@ export class SecondComponent implements OnInit {
         .transition()
         .delay(300)
         .duration(1500)
-        .attr("x", width+5)
+        .attr("x", winwidth*0.916)
         .attr("fill", function(d,i){
           return color_scale_user(""+i);
         })
-        .attr("font-size", 10)
+        .attr("font-size", winwidth * 0.0125)
         .text(function(d, i){
           return d;
         })
@@ -1416,13 +1413,12 @@ export class SecondComponent implements OnInit {
         .transition()
         .delay(501)
         .duration(2000)
-        .attr("x", "-1em")
-        .attr("text-anchor", "center")
+        .attr("text-anchor", "middle")
         .text(function(d,i){
             return +d-6400 + "KM";
         })
         .attr("font-size", winwidth * 0.0135)
-        .attr("stroke", "white")
+        .attr("fill", "white")
 
         svg.select(".altitude .domain")
         .attr("stroke", "none")
