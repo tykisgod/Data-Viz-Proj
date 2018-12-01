@@ -68,8 +68,6 @@ export class ThirdComponent implements OnInit {
     var xAxis = d3.axisBottom(xScale);
     var yAxis = d3.axisLeft(yScale);
 
-    // ���� x ��  y ��
-
     var line = d3.line()
         .x(function(d:any){return xScale(d['Year']);}) 
         .y(function(d:any){return yScale(d['rate']);})
@@ -87,7 +85,7 @@ export class ThirdComponent implements OnInit {
           data.forEach(function(d) {
           d.Years = d.Years;
           });  
-        console.log(data);
+        //console.log(data);
 
         color.domain(d3.keys(data[0]).filter(function(key) { return key !=="Years"; }));//.filter(function(key) { return key !=="year"; }));
         countries = color.domain().map(function(name) {
@@ -100,8 +98,8 @@ export class ThirdComponent implements OnInit {
           };
         });
 
-        console.log(countries);
-        console.log(data);
+       // console.log(countries);
+       // console.log(data);
         xScale.domain(data.map(function(d) { return d['Years']; }));
 
 
@@ -490,7 +488,7 @@ export class ThirdComponent implements OnInit {
             //arc.transition()
            // .duration(100)
             
-          console.log("here")
+          //console.log("here")
           
          
           d3.select("#pietitle").text("pie chart: "+ sentence +" satellites of each country");
@@ -567,18 +565,6 @@ export class ThirdComponent implements OnInit {
 
     }
 
-      
-      
-
-
-
-    
-    
-            
-
-       
-        
-    
   }
 
   
@@ -618,8 +604,8 @@ export class ThirdComponent implements OnInit {
     d3.csv("src/assets/barchart.csv").then(function(data) {
 
       var keys = data.columns.slice(1);
-      console.log(keys);
-      console.log(data);
+      //console.log(keys);
+      //console.log(data);
 
       x0.domain(data.map(function(d) { return d.Country; }));
       x1.domain(keys).rangeRound([0, x0.bandwidth()]);
@@ -634,10 +620,12 @@ export class ThirdComponent implements OnInit {
       .selectAll("rect")
       .data(function(d) { return keys.map(function(key) {return {key: key, value: +d[key]}; }); })
       .enter().append("rect")
-      .attr("x", function(d) { console.log(d) ;return x1(d.key); })
+      .attr("x", function(d) { //console.log(d) ;
+        return x1(d.key); })
       .attr("y", function(d) { return y(d.value); })
       .attr("width", x1.bandwidth())
-      .attr("height", function(d) { console.log(d.key);return height - y(d.value); })
+      .attr("height", function(d) { //console.log(d.key);
+        return height - y(d.value); })
       .attr("fill", function(d){return color(d.key).toString()})
       .on('mouseover',function(d,i){
         d3.select(this)
