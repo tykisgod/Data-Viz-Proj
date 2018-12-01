@@ -1,6 +1,5 @@
-Low Earth,Medium Earth,Geosynchronous,Elliptical
-609,31,200,20
-80,29,30,6
-185,14,51,0
-41,0,29,2
-271,38,238,12
+USA,Russia,China,Japan,Others
+609,80,185,41,271
+31,29,14,0,38
+200,30,51,29,238
+20,6,0,2,12

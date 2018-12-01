@@ -4,42 +4,13 @@
 .second {
     width: 90%;
 } */
-.bycountryarc text {
-    font: 15px Gill Sans;
-    text-anchor: middle;
-    fill:white;
-  };
-  
-.bycountryarc path { 
-    stroke: #fff;
-    stroke-width: 1.5px;
-}
-.byuserarc text {
-    font: 15px Gill Sans;
-    text-anchor: middle;
-    fill:white;
-  };
-  
-.bypurposearc path { 
-    stroke: #fff;
-    stroke-width: 1.5px;
-}
-.bypurposearc text {
-    font: 15px Gill Sans;
-    text-anchor: middle;
-    fill:white;
-  };
-  
-.byuserarc path { 
-    stroke: #fff;
-    stroke-width: 1.5px;
-}
+
 
 #tooltip {
     position: absolute;
-    min-width :90px;
-    height: 250px;
-    padding: 0 0 25px 0;
+    min-width :150px;
+    height: 120px;
+    padding: 10px 10px 10px 10px;
     background-color: rgba(0,0,0,0.6);
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -55,15 +26,6 @@
     text-align: center;
     font-weight: bold;
     z-index: 9999;
-}
-#explanatory {
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    left: 1220px;
-    top: 2350px;
-    text-anchor: middle;
-    text-align: center;
 }
 #mtooltip:before {
     border: solid;

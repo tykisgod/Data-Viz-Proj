@@ -1,7 +1,5 @@
-Low Earth,Medium Earth,Geosynchronous,Elliptical
-279,17,468,10
-602,0,39,9
-191,0,6,3
-0,95,14,0
-47,0,1,18
-67,0,20,0
+Communications,Earth Observation,Technology Development,Navigation/Global Positioning,Space Science,Others
+279,602,191,0,47,67
+17,0,0,95,0,0
+468,39,6,14,1,20
+10,9,3,0,18,0
