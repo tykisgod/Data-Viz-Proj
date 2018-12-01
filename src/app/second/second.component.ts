@@ -1483,7 +1483,7 @@ export class SecondComponent implements OnInit {
         .attr("cx", width+width)
         .remove()
 
-        svg.selectAll(".stack_g,stack_g2,stack_g3")
+        svg.selectAll(".stack_g,.stack_g2,.stack_g3")
         .transition()
         .delay(500)
         .duration(2000)
@@ -1494,8 +1494,11 @@ export class SecondComponent implements OnInit {
         .delay(500)
         .duration(2000)
         .attr("transform", "translate(" + 2*winwidth / 8 * 7.1 + "," + 0 + ")")
-        .remove()
-
+        svg.selectAll("#stack_title")
+        .transition()
+        .delay(500)
+        .duration(2000)
+        .text("")        
       })
     })
   }
