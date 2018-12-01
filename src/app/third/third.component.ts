@@ -22,7 +22,7 @@ export class ThirdComponent implements OnInit {
   }
 
   onResize(){
-    //this.draw();
+    this.draw3();
     //this.piechart();
 
   }
