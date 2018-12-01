@@ -13,12 +13,11 @@
 - [Demonstration URL](http://www-scf.usc.edu/~zhuyunin/demo/)
 - [Presentation PDF](https://github.com/INF554Fall18/project-kepler/blob/master/presentation/slides.pdf) and [transcript](https://github.com/INF554Fall18/project-kepler/blob/master/presentation/PRESENTATION_TRANSCRIPT.md)
 - [Article](https://github.com/INF554Fall18/project-kepler/blob/master/final_report.pdf) and [Overleaf URL](https://www.overleaf.com/7768316887pcpjwfhdccqr)
-- [YouTube video](<youtube-video-url>)
+- [YouTube video](https://youtu.be/BL6xRM94YDw)
 
 ## INTRODUCTION
 Have you ever wondered how space science has improved over years? Which country has most satellites? Where are these satellites? What're their uses?
-The Visualization presents information about universal satellites in multi-dimensional aspects
-
+This visualization project, with three visualization parts, presents information about universal satellites in multi-dimensional aspects, in order to interest non-specialists and help them understand more about it.
 ## DATA SOURCE
 - Data is obtained from [UCS Satellite Database](https://www.ucsusa.org/nuclear-weapons/space-weapons/satellite-database#.W9z4f3pKhTb)
 - Detailed, massive information, including 26 features on 1886 working satellites
