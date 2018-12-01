@@ -284,7 +284,7 @@ export class ThirdComponent implements OnInit {
 
     var winheight = window.innerHeight*0.7;
     var winwidth = window.innerWidth*0.7;
-
+    d3.select("#pietitle").remove();
     d3.select("#chart-svg1").remove();
 
     var svg = d3.select("#pie_chart")
@@ -385,6 +385,7 @@ export class ThirdComponent implements OnInit {
         d.value = +d.value;
         return d;
         }).then(function(data){
+          d3.select("#pietitle").remove();
 
           var arc = g.selectAll(".arc")
             .data(pie(data)) //use pie generator to create the data needed for the each slice of the pie
@@ -470,6 +471,7 @@ export class ThirdComponent implements OnInit {
 
 
     function drawPie2(src,which,number,descr){
+      d3.select("#pietitle").remove();
       // var pie = d3.pie() //pie generator
       //   .sort(null)
       //   .value(function(d) { return d['value']; });
@@ -490,8 +492,16 @@ export class ThirdComponent implements OnInit {
             
           //console.log("here")
           
+          d3.select("#chart-svg1").append("text")
+          .attr("id","pietitle")
+          .attr("x",winwidth/2.1)
+          .attr("y",winheight*0.95)
+          .text("pie chart: "+ sentence +" satellites of each country")
+          .attr("fill", "black")
+          .attr("text-anchor"," middle")
+          .attr("font-size", winwidth*0.02+"px");
          
-          d3.select("#pietitle").text("pie chart: "+ sentence +" satellites of each country");
+          //d3.select("#pietitle").text("pie chart: "+ sentence +" satellites of each country");
 
           arc
              .select("path") //for each slide use arc path generator to draw the pie
