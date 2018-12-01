@@ -13,7 +13,7 @@
 - [Demonstration URL](http://www-scf.usc.edu/~zhuyunin/demo/)
 - [Presentation PDF](https://github.com/INF554Fall18/project-kepler/blob/master/presentation/slides.pdf) and [transcript](https://github.com/INF554Fall18/project-kepler/blob/master/presentation/PRESENTATION_TRANSCRIPT.md)
 - [Article](https://github.com/INF554Fall18/project-kepler/blob/master/final_report.pdf) and [Overleaf URL](https://www.overleaf.com/7768316887pcpjwfhdccqr)
-- [YouTube video](https://youtu.be/BL6xRM94YDw)
+- [YouTube video](https://youtu.be/_izipdDclJo)
 
 ## INTRODUCTION
 Have you ever wondered how space science has improved over years? Which country has most satellites? Where are these satellites? What're their uses?
