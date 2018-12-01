@@ -330,6 +330,7 @@ export class SecondComponent implements OnInit {
         .delay(501)
         .duration(2000)
         .attr("text-anchor", "middle")
+        .attr("dy", winwidth*0.0005)
         .text(function(d,i){
             return +d-6400 + "KM";
         })
@@ -795,7 +796,7 @@ export class SecondComponent implements OnInit {
               return orbit_list[i];
           })
           .attr("fill", "white")
-          .attr("font-size", winwidth * 0.01)
+          .attr("font-size", winwidth * 0.008)
           svg.select(".y.axis")
               .attr("transform", "translate(" + winwidth*0.95 + "," + (height*1/2 - margin.bottom) + ")")
               .call(d3.axisRight(yScale))
@@ -1022,7 +1023,7 @@ export class SecondComponent implements OnInit {
               return orbit_list[i];
           })
           .attr("fill", "white")
-          .attr("font-size", winwidth * 0.0125)
+          .attr("font-size", winwidth * 0.008)
           svg.select(".y.axis")
               .attr("transform", "translate(" + winwidth*0.95 + "," + (height*0.5- margin.bottom) + ")")
               .call(d3.axisRight(yScale))
@@ -1260,7 +1261,7 @@ export class SecondComponent implements OnInit {
               return orbit_list[i];
           })
           .attr("fill", "white")
-          .attr("font-size", winwidth * 0.0125)
+          .attr("font-size", winwidth * 0.008)
           svg.select(".y.axis")
               .attr("transform", "translate(" + winwidth*0.95 + "," + (height*0.5 - margin.bottom)+ ")")
               .call(d3.axisRight(yScale))
