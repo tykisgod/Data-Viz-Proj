@@ -1,4 +1,4 @@
-# Project Kepler
+# Team Kepler: Visualization on Satellites Data
 
 ## PROJECT SUMMARY
 
@@ -21,20 +21,21 @@ The Visualization presents information about universal satellites in multi-dimen
 
 ## DATA SOURCE
 - Data is obtained from [UCS Satellite Database](https://www.ucsusa.org/nuclear-weapons/space-weapons/satellite-database#.W9z4f3pKhTb)
-- Detailed, massive information on 1886 working satellites
+- Detailed, massive information, including 26 features on 1886 working satellites
 - Map data is from [Nature Earth](https://www.naturalearthdata.com/downloads/)
+
 ## CONTENT SUMMARY
 ### ON EARTH
 - Combination of choropleth and proportional symbol map
-- Two checkbox: owned by countries and launched by sites
+- A time slider to show data on different years
 
 ### IN SPACE
-- Three main orbits: LEO, MEO, GEO ; some interesting elliptical orbits
-- Can be filtered by country
+- Dot map of satellite distribution orbiting Earth
+- Zoom-in/out, color by country/purpose/user
+- Corresponding stacked bar cahrt based on color rule
 
 ### MORE STORY
 - Combination of pie chart, bar chart and line chart to tell more story
-- For example: line chart: year and number of satellites; Pie chart: percentage of number of satellites of different countries/ others
 
 
 ## DEV SETUP
@@ -47,17 +48,19 @@ The Visualization presents information about universal satellites in multi-dimen
 - For first part, d3.map is used to draw the world map
 - For second part, satellites are projected on their orbits, d3 stack layout is used.
 - For third part, d3 pie layout and other charts are used 
+- d3 basic tools like axes, scales and transitions are applied through the project.
 
 ### ANGULAR
 - This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.5.
-- It's used for consistent development and maintenance.
-- Three components are created for three functional parts.
+- Auglar used for consistent development and maintenance.
+- Three components are created for three separate functional parts.
 
 ### BOOTSTRAP
+- Bootstrap is applied to design the page layout.
 - Bootstrap helps when some common and satisfactory style and functions like colored and styled buttons are applied, so that not much time would be used on that. 
 - Also it helps with responsive page.
 
-### Git
+### GIT
 - Git is used for collaborative development. 
 
 ### COVER AND NAVIGATION
@@ -67,15 +70,27 @@ The Visualization presents information about universal satellites in multi-dimen
 
 ### FIRST VISUALIZATION PART
 - Geojson mentioned above is used along with D3 to draw the map. 
-- The accumulated number of satellites of countries and launch sites each year is used to draw the choropleth and symbol proportional map. 
+- The accumulated number of satellites of countries and launch sites each year are used to draw the choropleth and symbol proportional map. 
 - A slider is developed to let user adjust time.
+- Detailed number and name can be shown with mouse over corresponding area.
 
 ### SECOND VISUALIZATION PART
 - A dot map of satellite distribution. 
-- Every satellite is projected on their orbits as a circle using perigee as "r" and a random number between 0 to $\pi$ to decide "cx" and "cy" on the page. Zoom-in and out function is developed with different scale and animation between each state is smooth. Each satellite can be colored by country/purpose/user based on user choice. Meanwhile a stacked bar chart with mouse-over tooltip is developed showing detailed information
+- Every satellite is projected on their orbits as a circle using perigee as "r" and a random number between 0 to pi to decide "cx" and "cy" on the page. 
+- Zoom-in and out "Choose Orbit" function is developed with different scale and animation between each state is smooth. 
+- Each satellite can be colored by country/purpose/user based on user choice.
+- Meanwhile a stacked bar chart with mouse-over tooltip is developed showing detailed information
 
 ### THIRD VISUALIZATION PART
-- 
+- The third part includes interactive charts using D3 layouts.
+- D3 pie chart is developed with buttons to jump to different views.
+- Selected line can be highlighted when mouse over.
+- Tooltips are developed to help users get more information.
+### STYLE
+- Responsive via Bootstrap
+- Consistent color scheme via well designed D3 color scheme
+- Smooth animated transitions via D3 transition function
+
 
 ## DEPLOYMENT
 - Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
