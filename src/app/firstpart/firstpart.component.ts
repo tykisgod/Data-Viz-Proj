@@ -81,20 +81,22 @@ export class FirstpartComponent implements OnInit {
         .attr("width", 140)
         .attr("height", 200)
         .selectAll("g")
-        .data([10, 30, 50, 70, 90, 110])
+        .data([0, -5, -5, 0, 5, 25])
         .enter()
         .append("g")
-        .attr("transform", function (d, i) { return "translate(" + (width * 8 / 10) + "," + (height / 2 + i * 30) + ")"; });
+        .attr("transform", function (d, i) { return "translate(" + (width * 8 / 10) + "," + (height / 2 + i * 50-d) + ")"; });
 
       legend.append("circle")
-        .data([d3.rgb(8, 53, 114), d3.rgb(65, 143, 197), d3.rgb(101, 169, 211), d3.rgb(142, 193, 222), d3.rgb(191, 216, 236), d3.rgb(219, 233, 246)])
-        .attr("r", 18)
+        .data([25.8, 24, 20, 17, 13, 10])
+        .attr("r", function (d) { return d })
+        .style("opacity","0.7")
         .style("fill", 'red');
 
       legend.append("text")
         .data(['200 or above', '101 to 200', '51 to 100', '21 to 50', '6 to 20', 'Under 5'])
-        .attr("x", 24)
+        .attr("x", 30)
         .attr("y", 9)
+        .attr('alignment-baseline','ideographic')
         .attr("dy", ".35em")
         .text(function (d) { return d; });
 
@@ -150,7 +152,6 @@ export class FirstpartComponent implements OnInit {
           // console.log(site_num_data)
           // console.log(site_long_lat_data)
           var site_data = new Array()
-
           site_long_lat_data.forEach(site_location_ele => {
             site_num_data.forEach(site_num_ele => {
               if (site_location_ele["site"] == site_num_ele["site"]) {
@@ -162,8 +163,9 @@ export class FirstpartComponent implements OnInit {
               }
             })
           });
+
           temp_site_data = site_data
-          svg.selectAll("circle")
+          svg.selectAll(".site_circle")
             .data(site_data)
             .enter()
             .append("circle")
